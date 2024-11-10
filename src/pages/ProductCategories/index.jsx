@@ -3,10 +3,11 @@ import { Fragment, useState } from 'react'
 import { Dialog, Disclosure, Transition } from '@headlessui/react'
 import Icon from '../../components/Icon'
 import Modal from '../../components/Modal'
-import { categories } from '../../constants'
+import { cardItems, categories } from '../../constants'
 import formatSearchQuery from '../../utils/getTitle'
 import { useSearchParams } from 'react-router-dom'
 import Pagination from '../../components/Pagination'
+import ProductCard2 from '../../components/ProductCard2';
 
 const filters = [
     {
@@ -111,7 +112,7 @@ export default function ProductCategories() {
                                     onClick={() => setMobileFiltersOpen(true)}
                                 >
                                     <span className="text-sm font-medium text-gray-700">Filters</span>
-                                    {/* <PlusSmIcon className="flex-shrink-0 ml-1 h-5 w-5 text-gray-400" aria-hidden="true" /> */}
+                                    <Icon iconName='plus' className="flex-shrink-0 ml-1 h-5 w-5 text-gray-400" aria-hidden="true" />
                                 </button>
 
                                 <div className="hidden lg:block h-[100vh] overflow-y-scroll">
@@ -142,13 +143,22 @@ export default function ProductCategories() {
                                     </form>
                                 </div>
                             </aside>
-
-                            {/* Product grid */}
-                            <div className="mt-6 lg:mt-0 lg:col-span-2 xl:col-span-3">
-                                {/* Replace with your content */}
-                                <div className="border-4 border-dashed border-gray-200 rounded-lg h-96 lg:h-full" />
+                            <div className="mt-6 mb-4 lg:mt-0 lg:col-span-2 xl:col-span-3">
+                                <div className="h-auto lg:h-full">
+                                    <div className="flex flex-col sm:flex-row sm:flex-wrap justify-start gap-2">
+                                        {cardItems.map(({ text, category, link, image, price }, index) => (
+                                            <ProductCard2
+                                                key={index}
+                                                text={text}
+                                                category={category}
+                                                link={link}
+                                                price={price}
+                                                image={image}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
                                 <Pagination />
-                                {/* /End replace */}
                             </div>
                         </div>
                     </main>

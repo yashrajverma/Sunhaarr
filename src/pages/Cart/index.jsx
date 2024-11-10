@@ -1,6 +1,5 @@
 import Button from "../../components/Button"
 import Icon from "../../components/Icon"
-import Navbar from "../../components/Navbar"
 
 const products = [
     {
@@ -41,7 +40,6 @@ const products = [
 export default function Cart() {
     return (
         <>
-            <Navbar />
             <div className="bg-white">
                 <div className="max-w-2xl mx-auto pt-16 pb-24 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
                     <h1 className="text-3xl font-extrabold tracking-tight text-primaryNavy sm:text-4xl">Shopping Cart</h1>

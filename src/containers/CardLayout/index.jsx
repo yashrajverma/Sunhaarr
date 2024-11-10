@@ -7,21 +7,20 @@ const CardLayout = ({ cardItems }) => {
 
     return (
         <>
-            <div className='flex justify-around items-center gap-2 p-3'>
+            <div className='flex flex-wrap justify-around items-center gap-2 p-3 sm:flex-nowrap'>
                 {cardItems.map(({ image, text, link }, index) => {
-                    return <ProductCard image={image} text={text} link={link} even={index % 2 == 0} />
+                    return <ProductCard key={index} image={image} text={text} link={link} even={index % 2 === 0} />
                 })}
             </div>
             <div className='my-14'>
-                <h1 className='text-center text-3xl mb-5'>Trending Now</h1>
+                <h1 className='text-center text-3xl mb-5 font-bold'>Trending Now</h1>
 
-                <div className='flex justify-around items-center gap-2 p-3'>
+                <div className='flex flex-wrap justify-around items-center gap-2 p-3 sm:flex-nowrap'>
                     {cardItems.map(({ image, text, link, price, category }, index) => {
-                        return <ProductCard2 image={image} text={text} link={link} price={price} category={category} />
+                        return <ProductCard2 key={index} image={image} text={text} link={link} price={price} category={category} />
                     })}
                 </div>
             </div>
-
         </>
     )
 }

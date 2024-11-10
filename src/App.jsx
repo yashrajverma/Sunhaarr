@@ -8,6 +8,7 @@ import NotFound404 from "./pages/NotFound404"
 import ProductPage from "./pages/ProductPage"
 import Footer from "./components/Footer"
 import Navbar from "./components/Navbar"
+import Wishlist from "./containers/Wishlist"
 
 function App() {
   const routesItems = [
@@ -17,7 +18,8 @@ function App() {
     { path: '/products', element: <ProductCategories /> },
     { path: '/cart', element: <Cart /> },
     { path: '/product', element: <ProductPage /> },
-    { path: '*', element: <NotFound404 /> }
+    { path: '*', element: <NotFound404 /> },
+    { path: '/wishlist', element: <Wishlist /> }
   ]
 
   return (

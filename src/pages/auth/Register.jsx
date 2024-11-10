@@ -6,9 +6,9 @@ import { Link } from 'react-router-dom'
 const Register = () => {
     return (
         <div className="py-16">
-            <div className="flex bg-softPeach rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
+            <div className="flex bg-softPeach shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
                 <div className="w-full p-8 lg:w-1/2">
-                    <h1 className="text-4xl font-semibold text-gray-700 text-center">{BrandName}</h1>
+                    <h1 className="text-4xl font-bold text-gray-700 text-center">{BrandName}</h1>
                     <p className="text-xl text-gray-600 text-center">Become a Member!</p>
                     <div className='flex justify-between gap-1'>
                         <div className="mt-4">

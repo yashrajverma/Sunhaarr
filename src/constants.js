@@ -1,3 +1,6 @@
+import Image1 from "./assets/images/image1.svg";
+import Image2 from "./assets/images/image2.svg";
+import Image3 from "./assets/images/image3.svg";
 export const API_BASE_URL = "http://localhost:5000";
 export const BrandName = "Sunhaarr";
 export const API_URL = {
@@ -42,4 +45,49 @@ export const categories = [
   { type: "occasions", value: "gift", label: "Gift" },
   { type: "occasions", value: "office", label: "Office Wear" },
   { type: "occasions", value: "party", label: "Party" },
+];
+
+export const cardItems = [
+  {
+    category: "Earrings",
+    price: "4000",
+    image: Image1,
+    link: "/products?search=bangles",
+    text: "Bangles",
+  },
+  {
+    category: "Earrings",
+    price: "2400",
+    image: Image2,
+    link: "/products?search=rings",
+    text: "Rings",
+  },
+  {
+    category: "Earrings",
+    price: "5600",
+    image: Image3,
+    link: "/products?search=chains",
+    text: "Chains",
+  },
+  {
+    category: "Earrings",
+    price: "14400",
+    image: Image1,
+    link: "/products?search=payal",
+    text: "Payal",
+  },
+  {
+    category: "Earrings",
+    price: "4000",
+    image: Image2,
+    link: "/products?search=pendant",
+    text: "Pendant",
+  },
+  {
+    category: "Earrings",
+    price: "4000",
+    image: Image3,
+    link: "/products?search=earrings",
+    text: "Earrings",
+  },
 ];

@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
-const Button = ({ variant, disabled, onClick, children, className }) => {
+const Button = ({ variant, disabled, onClick, children, className, href }) => {
     // Determine the base and hover styles based on the variant
     const baseClasses = `
-    px-5 py-2.5 text-white font-medium w-[100%]
+    px-5 py-2.5 text-white font-medium w-[100%] block text-center
     ${variant === 'accent' ? 'bg-accentGold' : 'bg-primaryNavy'}
     ${disabled ? 'opacity-60 cursor-not-allowed' : 'hover:bg-primaryNavy hover:text-white'}
   `;
-
-    // Apply conditional hover colors
     const hoverClasses = disabled
         ? ''
         : variant === 'accent'
@@ -17,13 +16,23 @@ const Button = ({ variant, disabled, onClick, children, className }) => {
             : 'hover:bg-accentGold hover:text-textGray';
 
     return (
-        <button
-            className={`${baseClasses} ${hoverClasses} ${className}`}
-            disabled={disabled}
-            onClick={onClick}
-        >
-            {children}
-        </button>
+        <>{href ?
+            <Link
+                className={`${baseClasses} ${hoverClasses} ${className}`}
+                disabled={disabled}
+                to={href}
+                onClick={onClick}
+            >
+                {children}
+            </Link> :
+            <button
+                className={`${baseClasses} ${hoverClasses} ${className}`}
+                disabled={disabled}
+                onClick={onClick}
+            >
+                {children}
+            </button>}
+        </>
     );
 };
 

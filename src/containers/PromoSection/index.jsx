@@ -7,7 +7,6 @@ import image8 from '../../assets/images/image8.svg';
 import image9 from '../../assets/images/image9.svg';
 import image10 from '../../assets/images/image10.svg';
 
-
 export default function PromoSection() {
     return (
         <div className="relative bg-white overflow-hidden">
