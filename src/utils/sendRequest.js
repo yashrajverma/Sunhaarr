@@ -12,6 +12,8 @@ export const sendRequest = async ({
   const headers = isJSON ? { "Content-Type": contentType } : {};
 
   try {
+    console.log("url:", `${isExternalAPI ? "" : API_BASE_URL}${url}`);
+
     const response = await axios({
       url: `${isExternalAPI ? "" : API_BASE_URL}${url}`,
       method,
