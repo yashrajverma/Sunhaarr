@@ -1,69 +1,102 @@
+import React, { useState } from "react";
 import Icon from "../Icon";
 
-export default function Pagination() {
+export default function Pagination({ items, itemsPerPage = 10 }) {
+    const totalPages = Math.ceil(items.length / itemsPerPage);
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const handlePageClick = (page) => {
+        setCurrentPage(page);
+    };
+
+    const handlePreviousClick = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    const handleNextClick = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const getVisiblePages = () => {
+        const pages = [];
+        const maxVisiblePages = 5;
+        let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+        let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+        if (endPage - startPage < maxVisiblePages - 1) {
+            startPage = Math.max(1, endPage - maxVisiblePages + 1);
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            pages.push(i);
+        }
+        return pages;
+    };
+
+    const visiblePages = getVisiblePages();
+
     return (
         <nav className="border-t border-gray-200 px-4 flex items-center justify-between sm:px-0 my-0">
+            {/* Previous Button */}
             <div className="-mt-px w-0 flex-1 flex">
-                <a
-                    href="#"
-                    className="border-t-2 border-transparent pt-4 pr-1 inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                <button
+                    onClick={handlePreviousClick}
+                    disabled={currentPage === 1}
+                    className={`border-t-2 border-transparent pt-4 pr-1 inline-flex items-center text-sm font-medium ${currentPage === 1 ? "text-gray-300 cursor-not-allowed" : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                        }`}
                 >
                     <Icon iconName="arrowleft" className="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" />
                     Previous
-                </a>
+                </button>
             </div>
+
+            {/* Page Numbers */}
             <div className="hidden md:-mt-px md:flex">
-                <a
-                    href="#"
-                    className="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"
-                >
-                    1
-                </a>
-                {/* Current: "border-indigo-500 text-indigo-600", Default: "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" */}
-                <a
-                    href="#"
-                    className="border-accentGold text-accentGold border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"
-                    aria-current="page"
-                >
-                    2
-                </a>
-                <a
-                    href="#"
-                    className="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"
-                >
-                    3
-                </a>
-                <span className="border-transparent text-gray-500 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium">
-                    ...
-                </span>
-                <a
-                    href="#"
-                    className="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"
-                >
-                    8
-                </a>
-                <a
-                    href="#"
-                    className="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"
-                >
-                    9
-                </a>
-                <a
-                    href="#"
-                    className="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"
-                >
-                    10
-                </a>
+                {visiblePages.map((page) => (
+                    <button
+                        key={page}
+                        onClick={() => handlePageClick(page)}
+                        className={`border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium ${page === currentPage
+                                ? "border-accentGold text-accentGold"
+                                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                            }`}
+                        aria-current={page === currentPage ? "page" : undefined}
+                    >
+                        {page}
+                    </button>
+                ))}
+                {/* Show ellipsis for additional pages */}
+                {visiblePages[visiblePages.length - 1] < totalPages && (
+                    <>
+                        <span className="border-transparent text-gray-500 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium">
+                            ...
+                        </span>
+                        <button
+                            onClick={() => handlePageClick(totalPages)}
+                            className="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"
+                        >
+                            {totalPages}
+                        </button>
+                    </>
+                )}
             </div>
+
+            {/* Next Button */}
             <div className="-mt-px w-0 flex-1 flex justify-end">
-                <a
-                    href="#"
-                    className="border-t-2 border-transparent pt-4 pl-1 inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                <button
+                    onClick={handleNextClick}
+                    disabled={currentPage === totalPages}
+                    className={`border-t-2 border-transparent pt-4 pl-1 inline-flex items-center text-sm font-medium ${currentPage === totalPages ? "text-gray-300 cursor-not-allowed" : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                        }`}
                 >
                     Next
                     <Icon iconName="arrowright" className="ml-3 h-5 w-5 text-gray-400" aria-hidden="true" />
-                </a>
+                </button>
             </div>
         </nav>
-    )
+    );
 }

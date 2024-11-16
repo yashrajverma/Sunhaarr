@@ -9,6 +9,8 @@ import ProductPage from "./pages/ProductPage"
 import Footer from "./components/Footer"
 import Navbar from "./components/Navbar"
 import Wishlist from "./containers/Wishlist"
+import PrivacyPolicy from "./pages/PrivacyPolicy"
+import JewelCare from "./pages/JewelCare"
 
 function App() {
   const routesItems = [
@@ -17,9 +19,11 @@ function App() {
     { path: '/register', element: <Register /> },
     { path: '/products', element: <ProductCategories /> },
     { path: '/cart', element: <Cart /> },
-    { path: '/product', element: <ProductPage /> },
+    { path: '/product/:id', element: <ProductPage /> },
     { path: '*', element: <NotFound404 /> },
-    { path: '/wishlist', element: <Wishlist /> }
+    { path: '/wishlist', element: <Wishlist /> },
+    { path: '/privacy-policy', element: <PrivacyPolicy /> },
+    { path: '/jewel-care', element: <JewelCare /> },
   ]
 
   return (

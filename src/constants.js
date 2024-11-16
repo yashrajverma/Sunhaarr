@@ -1,10 +1,11 @@
-import Image1 from "./assets/images/image1.svg";
-import Image2 from "./assets/images/image2.svg";
-import Image3 from "./assets/images/image3.svg";
-export const API_BASE_URL = "http://localhost:5000";
+export const API_BASE_URL =
+  process.env.NODE_ENV == "production"
+    ? process.env.BASE_URL
+    : "http://localhost:5000";
 export const BrandName = "Sunhaarr";
 export const API_URL = {
   getUser: "/user",
+  getProducts: "/products",
 };
 
 export const HTTP_STATUS_CODES = {
@@ -15,20 +16,20 @@ export const HTTP_STATUS_CODES = {
 };
 
 export const categories = [
-  { type: "type", value: "tops", label: "Tops" },
-  { type: "type", value: "earring", label: "Earrings" },
-  { type: "type", value: "pendant", label: "Pendant" },
-  { type: "type", value: "payal", label: "Payal" },
-  { type: "type", value: "tikka", label: "Manng Tikka" },
-  { type: "type", value: "pearl_necklace", label: "Pearl Necklace" },
-  { type: "type", value: "everyday_necklace", label: "Everyday Necklace" },
-  { type: "type", value: "wedding_necklace", label: "Wedding Necklace" },
-  { type: "type", value: "mangalsutra", label: "Mangalsutra" },
-  { type: "type", value: "men_chain", label: "Men Chains" },
-  { type: "type", value: "women_chain", label: "Women Chains" },
-  { type: "type", value: "child_chain", label: "Child Chains" },
-  { type: "type", value: "new_arrivals", label: "New Arrivals" },
-  { type: "type", value: "best_sellers", label: "Best Sellers" },
+  { type: "category", value: "tops", label: "Tops" },
+  { type: "category", value: "earring", label: "Earrings" },
+  { type: "category", value: "pendant", label: "Pendant" },
+  { type: "category", value: "payal", label: "Payal" },
+  { type: "category", value: "tikka", label: "Manng Tikka" },
+  { type: "category", value: "pearl_necklace", label: "Pearl Necklace" },
+  { type: "category", value: "everyday_necklace", label: "Everyday Necklace" },
+  { type: "category", value: "wedding_necklace", label: "Wedding Necklace" },
+  { type: "category", value: "mangalsutra", label: "Mangalsutra" },
+  { type: "category", value: "men_chain", label: "Men Chains" },
+  { type: "category", value: "women_chain", label: "Women Chains" },
+  { type: "category", value: "child_chain", label: "Child Chains" },
+  { type: "category", value: "new_arrivals", label: "New Arrivals" },
+  { type: "category", value: "best_sellers", label: "Best Sellers" },
 
   { type: "purity", value: "18kt", label: "18kt" },
   { type: "purity", value: "20kt", label: "20kt" },
@@ -49,45 +50,57 @@ export const categories = [
 
 export const cardItems = [
   {
-    category: "Earrings",
+    in_stock: true,
+    category: "bangles",
     price: "4000",
-    image: Image1,
-    link: "/products?search=bangles",
+    image:
+      "https://images.unsplash.com/photo-1619893454156-26a705ac9eb5?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    link: "/products?category=bangles",
     text: "Bangles",
   },
   {
-    category: "Earrings",
+    in_stock: true,
+    category: "rings",
     price: "2400",
-    image: Image2,
-    link: "/products?search=rings",
+    image:
+      "https://images.unsplash.com/photo-1698259947512-a6ac66f961f2?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    link: "/products?category=rings",
     text: "Rings",
   },
   {
-    category: "Earrings",
+    in_stock: true,
+    category: "chain",
     price: "5600",
-    image: Image3,
-    link: "/products?search=chains",
+    image:
+      "https://images.unsplash.com/photo-1585711715631-1e6bf224f092?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    link: "/products?category=chains",
     text: "Chains",
   },
   {
-    category: "Earrings",
+    in_stock: true,
+    category: "payal",
     price: "14400",
-    image: Image1,
-    link: "/products?search=payal",
+    image:
+      "https://plus.unsplash.com/premium_photo-1673896633781-f7c5920870e0?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    link: "/products?category=payal",
     text: "Payal",
   },
   {
-    category: "Earrings",
+    in_stock: true,
+    category: "pendant",
     price: "4000",
-    image: Image2,
-    link: "/products?search=pendant",
+    image:
+      "https://images.unsplash.com/photo-1650455221359-3aebf920bcc5?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    link: "/products?category=pendant",
     text: "Pendant",
   },
   {
-    category: "Earrings",
+    in_stock: true,
+    category: "earring",
     price: "4000",
-    image: Image3,
-    link: "/products?search=earrings",
+    image:
+      "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    link: "/products?category=earrings",
     text: "Earrings",
   },
 ];

@@ -5,7 +5,7 @@ export const AppImage = ({
 }) => {
     return (
         <div
-            className={`flex absolute w-full h-full ${selected === index
+            className={` flex absolute w-full h-full ${selected === index
                 ? "left-0"
                 : selected > index
                     ? "-left-full"

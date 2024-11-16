@@ -8,10 +8,14 @@ import reducers from './reducers.js';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas/root.js';
 import { BrowserRouter } from 'react-router-dom';
+import { composeWithDevTools } from '@redux-devtools/extension';
 
 const sagaMiddleWare = createSagaMiddleware()
 
-const store = createStore(reducers(), applyMiddleware(sagaMiddleWare));
+const store = createStore(
+  reducers(),
+  composeWithDevTools(applyMiddleware(sagaMiddleWare))
+);
 
 sagaMiddleWare.run(rootSaga)
 

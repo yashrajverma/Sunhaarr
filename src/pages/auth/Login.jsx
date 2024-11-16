@@ -7,8 +7,8 @@ const Login = () => {
     return (
         <div className="py-16">
             <div className="flex bg-softPeach shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
-                <div className="hidden lg:block lg:w-1/2 bg-cover"
-                    style={{ backgroundImage: "url('https://images.unsplash.com/photo-1546514714-df0ccc50d7bf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=667&q=80')" }}>
+                <div className="hidden lg:block lg:w-1/2 bg-cover bg-no-repeat bg-center"
+                    style={{ backgroundImage: "url('https://images.unsplash.com/photo-1705326454924-f6777522b030?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')" }}>
                 </div>
                 <div className="w-full p-8 lg:w-1/2">
                     <h1 className="text-4xl font-bold text-gray-700 text-center">{BrandName}</h1>

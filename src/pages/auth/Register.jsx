@@ -41,7 +41,7 @@ const Register = () => {
                     </div>
                 </div>
                 <div className="hidden lg:block lg:w-1/2 bg-cover"
-                    style={{ backgroundImage: "url('https://images.unsplash.com/photo-1546514714-df0ccc50d7bf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=667&q=80')" }}>
+                    style={{ backgroundImage: "url('https://images.unsplash.com/photo-1652375152241-d3e62ab52b57?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')" }}>
                 </div>
             </div>
         </div>

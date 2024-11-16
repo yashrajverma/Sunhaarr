@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 const ProductCard = ({ image, text, link, even }) => {
     return (
-        <Link to={link} className="relative w-64 h-96 overflow-hidden shadow-lg cursor-pointer">
+        <Link to={link} className="relative w-96 md:w-64 h-96 overflow-hidden shadow-lg cursor-pointer">
             <img
                 src={image}
                 alt={text}

@@ -1,12 +1,25 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Product from '../../components/Product'
+import { connect } from 'react-redux';
+import { getSingleProducts } from '../../routines';
+import { useLocation } from 'react-router-dom';
 
-const ProductPage = () => {
+const ProductPage = ({ getSingleProducts, product }) => {
+    const location = useLocation().pathname.split('/')[2]
+    useEffect(() => {
+        getSingleProducts({ productId: location })
+    }, [])
     return (
-        <div>
-            <Product />
-        </div>
+        product && <Product product={product} />
     )
+};
+
+const mapDispatchToProps = {
+    getSingleProducts
 }
 
-export default ProductPage
+const mapStateToProps = (product) => {
+    return product
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductPage)

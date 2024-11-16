@@ -7,12 +7,17 @@ export const AppCarousel = ({ images }) => {
   const [selected, setSelected] = useState(0);
 
   useEffect(() => {
-    if (selected < 0) {
-      setSelected(0);
-    }
-    if (selected > images.length - 1) {
-      setSelected(images.length - 1);
-    }
+
+    const timeout = setTimeout(() => {
+      if (selected >= images.length - 1) {
+        setSelected(0);
+      } else {
+        setSelected(selected + 1);
+      }
+    }, 1500);
+
+
+    return () => clearTimeout(timeout);
   }, [selected, images.length]);
 
   return (

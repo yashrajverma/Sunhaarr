@@ -7,16 +7,16 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navbarItems = [
-    { type: 'link', label: 'Earrings', href: '/products?search=earrings' },
-    { type: 'link', label: 'Maang Tikka', href: '/products?search=tikka' },
+    { type: 'link', label: 'Earrings', href: '/products?category=earring' },
+    { type: 'link', label: 'Maang Tikka', href: '/products?category=tikka' },
     {
       type: 'dropdown',
       label: 'Necklace',
       items: [
-        { label: 'Pearl Necklace', href: '/products?search=pearl_necklace' },
-        { label: 'Everyday Necklace', href: '/products?search=everyday_necklace' },
-        { label: 'Wedding Necklace', href: '/products?search=wedding_necklace' },
-        { label: 'MangalSutra', href: '/products?search=mangalsutra' },
+        { label: 'Pearl Necklace', href: '/products?category=pearl_necklace' },
+        { label: 'Everyday Necklace', href: '/products?category=everyday_necklace' },
+        { label: 'Wedding Necklace', href: '/products?category=wedding_necklace' },
+        { label: 'MangalSutra', href: '/products?category=mangalsutra' },
       ]
     },
     { type: 'link', label: 'Rings', href: '/contact' },
@@ -24,25 +24,30 @@ const Navbar = () => {
       type: 'dropdown',
       label: 'Chains',
       items: [
-        { label: 'Men Chains', href: '/products?search=men_chains' },
-        { label: 'Women Chains', href: '/products?search=women_chains' },
-        { label: 'Child Chains', href: '/products?search=child_chains' },
+        { label: 'Men Chains', href: '/products?category=men_chains' },
+        { label: 'Women Chains', href: '/products?category=women_chains' },
+        { label: 'Child Chains', href: '/products?category=child_chains' },
       ]
     },
     {
       type: 'dropdown',
       label: 'Gold/Silver',
       items: [
-        { label: '18kt Gold', href: '/products?search=18kt' },
-        { label: '20kt Gold', href: '/products?search=20kt' },
-        { label: '22kt Gold', href: '/products?search=22kt' },
+        { label: '18kt Gold', href: '/products?category=18kt' },
+        { label: '20kt Gold', href: '/products?category=20kt' },
+        { label: '22kt Gold', href: '/products?category=22kt' },
       ]
     },
-    { type: 'link', label: 'Best Sellers', href: '/products?search=best_sellers' }
+    { type: 'link', label: 'Best Sellers', href: '/products?category=best_sellers' }
   ];
 
   return (
     <div className="w-full bg-softPeach h-max py-3 border-b border-gray-600">
+      <div className="block text-center mb-3 md:hidden">
+        <Link to="/">
+          <h1 className="text-accentGold text-2xl font-bold">Sunhaarr.com</h1>
+        </Link>
+      </div>
       <div className="flex justify-between px-6 md:px-16 items-center">
         {/* Left Side: Search */}
         <div className="flex items-center w-full md:w-auto border-2 border-primaryNavy border-opacity-75 px-2">
@@ -77,7 +82,7 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Hamburger Icon */}
-          <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden">
+          <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden ml-2">
             <Icon iconName="bars3" size="w-6 h-6" color="text-primaryNavy" />
           </button>
         </div>
