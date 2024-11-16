@@ -1,6 +1,6 @@
 export const API_BASE_URL =
   process.env.NODE_ENV == "production"
-    ? process.env.BASE_URL
+    ? "https://sunhaarr-backend.vercel.app"
     : "http://localhost:5000";
 export const BrandName = "Sunhaarr";
 export const API_URL = {
