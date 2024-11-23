@@ -1,6 +1,8 @@
 import axios from "axios";
 import { API_BASE_URL, HTTP_STATUS_CODES } from "../constants";
-const user = JSON.parse(localStorage.getItem("persist:root")).user;
+const user = JSON.parse(localStorage.getItem("persist:root"))?.user || {
+  token: "",
+};
 
 export const sendRequest = async ({
   url,
