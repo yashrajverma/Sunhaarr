@@ -1,10 +1,9 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useEffect } from 'react'
 
 import { NavLink, useSearchParams } from 'react-router-dom'
-import Dashboard from './dashboard'
-import AddressBook from './addressBook'
+import Dashboard from './Dashboard'
+import AddressBook from './AddressBook'
 import PaymentMethod from './PaymentMethod'
 import Orders from './Orders'
 
