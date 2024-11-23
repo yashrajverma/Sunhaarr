@@ -2,10 +2,13 @@ import { combineReducers } from "redux";
 import userReducer from "./reducers/user";
 import getProductsReducer from "./reducers/product";
 import getSingleProductsReducer from "./reducers/singleProduct";
+import cartReducer from "./reducers/cart";
 
-export default (reducers) =>
-  combineReducers({
-    user: userReducer,
-    products: getProductsReducer,
-    product: getSingleProductsReducer,
-  });
+const rootReducer = combineReducers({
+  user: userReducer,
+  products: getProductsReducer,
+  product: getSingleProductsReducer,
+  cart: cartReducer,
+});
+
+export default rootReducer;

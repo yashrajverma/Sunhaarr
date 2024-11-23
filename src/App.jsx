@@ -11,8 +11,13 @@ import Navbar from "./components/Navbar"
 import Wishlist from "./containers/Wishlist"
 import PrivacyPolicy from "./pages/PrivacyPolicy"
 import JewelCare from "./pages/JewelCare"
+import { connect, useDispatch } from "react-redux"
+import { sendRequest } from "./utils/sendRequest";
+import { useEffect } from "react";
+import { user } from "./routines"
+import Account from "./pages/Account"
 
-function App() {
+function App({ user, userData }) {
   const routesItems = [
     { path: '/', element: <Home /> },
     { path: '/login', element: <Login /> },
@@ -24,7 +29,20 @@ function App() {
     { path: '/wishlist', element: <Wishlist /> },
     { path: '/privacy-policy', element: <PrivacyPolicy /> },
     { path: '/jewel-care', element: <JewelCare /> },
-  ]
+    { path: '/account', element: <Account /> },
+  ];
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (!userData.isAuthenticated) {
+      (async function get() {
+        const { csrfToken } = await sendRequest({ url: '/register' });
+
+        dispatch(user(csrfToken));
+      })()
+    }
+  }, [])
 
   return (
     <>
@@ -38,5 +56,13 @@ function App() {
     </>
   )
 }
+const mapStateToProps = ({ user }) => {
 
-export default App
+  return { userData: user }
+}
+
+const mapDispatchToProps = {
+  user
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

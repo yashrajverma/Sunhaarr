@@ -1,12 +1,16 @@
 import { handleActions } from "redux-actions";
 
-import { getUser } from "../routines";
+import { user } from "../routines";
 
 const defaultState = { token: "", isAuthenticated: false };
 
 const userReducer = handleActions(
   {
-    [getUser.SUCCESS]: (state, payload) => state,
+    [user.SUCCESS]: (state, { payload }) => {
+      const { csrfToken } = payload.userData;
+
+      return { token: csrfToken, isAuthenticated: true };
+    },
   },
   defaultState
 );

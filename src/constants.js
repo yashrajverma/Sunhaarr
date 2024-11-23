@@ -4,8 +4,10 @@ export const API_BASE_URL =
     : "http://localhost:5000";
 export const BrandName = "Sunhaarr";
 export const API_URL = {
-  getUser: "/user",
-  getProducts: "/products",
+  user: "/register",
+  products: "/products",
+  cart: "/cart",
+  cartItem: "/item",
 };
 
 export const HTTP_STATUS_CODES = {

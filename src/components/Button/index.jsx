@@ -43,6 +43,7 @@ Button.propTypes = {
     onClick: PropTypes.func,
     children: PropTypes.node.isRequired,
     className: PropTypes.string,
+    href: PropTypes.string
 };
 
 // Default props
@@ -51,6 +52,7 @@ Button.defaultProps = {
     disabled: false,
     onClick: () => { },
     className: '',
+    href: null
 };
 
 export default Button;

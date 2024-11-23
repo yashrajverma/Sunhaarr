@@ -9,9 +9,7 @@ const ProductPage = ({ getSingleProducts, product }) => {
     useEffect(() => {
         getSingleProducts({ productId: location })
     }, [])
-    return (
-        product && <Product product={product} />
-    )
+    return product && <Product product={product} />
 };
 
 const mapDispatchToProps = {

@@ -1,18 +1,18 @@
 import { call, put, takeLatest } from "redux-saga/effects";
-import { getUser } from "../routines";
+import { user } from "../routines";
 import Api from "../api";
 export function* getUserSaga() {
   try {
-    yield put(getUser.request());
+    yield put(user.request());
     const userData = yield call(Api.getUser);
-    yield put(getUser.success({ userData }));
+    yield put(user.success({ userData }));
   } catch (err) {
     console.log(err);
-    yield put(getUser.failure(err));
+    yield put(user.failure(err));
   } finally {
-    yield put(getUser.fulfill());
+    yield put(user.fulfill());
   }
 }
 export function* watchUsers() {
-  yield takeLatest(getUser.TRIGGER, getUserSaga);
+  yield takeLatest(user.TRIGGER, getUserSaga);
 }

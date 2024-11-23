@@ -44,7 +44,7 @@ const NavbarItemsList = ({ items }) => {
                             >
                                 {item.items.map((subItem, subIndex) => {
                                     return (
-                                        <NavLink to={subItem.href} key={subIndex} role="menuitem" className="z-10 cursor-pointer block px-4 py-2 text-softPeach hover:text-accentGold md:text-left ">
+                                        <NavLink onBlur={() => { handleDropdownToggle(null) }} to={subItem.href} key={subIndex} role="menuitem" className="z-10 cursor-pointer block px-4 py-2 text-softPeach hover:text-accentGold md:text-left ">
                                             {subItem.label}
                                         </NavLink>
                                     )

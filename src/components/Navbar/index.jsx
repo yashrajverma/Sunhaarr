@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import NavbarItemsList from "./navbarItemsList";
 import Icon from "../Icon";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -19,7 +20,7 @@ const Navbar = () => {
         { label: 'MangalSutra', href: '/products?category=mangalsutra' },
       ]
     },
-    { type: 'link', label: 'Rings', href: '/contact' },
+    { type: 'link', label: 'Rings', href: '/products?category=rings' },
     {
       type: 'dropdown',
       label: 'Chains',
@@ -40,6 +41,8 @@ const Navbar = () => {
     },
     { type: 'link', label: 'Best Sellers', href: '/products?category=best_sellers' }
   ];
+
+  const { user } = useSelector((state) => state);
 
   return (
     <div className="w-full bg-softPeach h-max py-3 border-b border-gray-600">
@@ -70,7 +73,7 @@ const Navbar = () => {
         <div className="flex items-center gap-2 md:gap-1">
           {/* Desktop Icons */}
           <div className="hidden md:flex gap-1">
-            <Link to='/login'>
+            <Link to={user.isAuthenticated ? '/account' : '/login'}>
               <Icon iconName="user" color="text-primaryNavy" />
             </Link>
             <Link to='/wishlist'>

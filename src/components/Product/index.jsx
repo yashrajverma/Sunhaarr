@@ -4,6 +4,9 @@ import { Disclosure, Popover, RadioGroup, Tab, Transition } from '@headlessui/re
 import Icon from '../Icon'
 import Button from '../Button'
 import Skeleton from '../Skeleton'
+import { connect } from 'react-redux'
+import { addCartItem } from '../../routines'
+import extractArraysFromText from '../../utils/textToArray'
 
 const navigation = {
     categories: [
@@ -244,12 +247,14 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function Product({ product }) {
+function Product({ product, addCartItem, cart }) {
     const [open, setOpen] = useState(false)
     const [selectedColor, setSelectedColor] = useState({});
     const [productImages, setProductImages] = useState([]);
     const [productDetails, setProductDetails] = useState([]);
     const [productColors, setProductColors] = useState([]);
+    const [productQuantity, setProductQuantity] = useState(1);
+
 
     useEffect(() => {
         if (product) {
@@ -275,6 +280,10 @@ export default function Product({ product }) {
         }
     }, [product]);
 
+
+    const addItemToCart = (productId) => {
+        addCartItem({ productId, quantity: 1 })
+    }
 
     return (
         product ?
@@ -329,10 +338,21 @@ export default function Product({ product }) {
                             {/* Product info */}
                             <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
                                 <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">{product.name}</h1>
-
+                                <div className="max-w-xs">
+                                    <div for="quantity-input" className="block my-2 text-sm font-normal text-gray-900 dark:text-primaryNavy">Quantity</div>
+                                    <div className="relative flex items-center max-w-[8rem]">
+                                        <button onClick={() => { productQuantity >= 1 && setProductQuantity(productQuantity - 1) }} type="button" id="decrement-button" className="   dark:border-primaryNavy hover:bg-gray-200 border border-gray-300 p-2 h-11 ">
+                                            <Icon iconName='minus' />
+                                        </button>
+                                        <input value={productQuantity} onChange={(e) => { setProductQuantity(e.target.value) }} type="text" id="quantity-input" className=" font-semibold bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-primaryNavy text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-primaryNavy dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                        <button onClick={() => { setProductQuantity(productQuantity + 1) }} type="button" id="increment-button" className="   dark:border-primaryNavy hover:bg-gray-200 border border-gray-300 p-2 h-11 ">
+                                            <Icon iconName='plus' />
+                                        </button>
+                                    </div>
+                                </div>
                                 <div className="mt-3">
                                     <h2 className="sr-only">Product information</h2>
-                                    <p className="text-3xl text-gray-900">₹ {product.price}</p>
+                                    <p className="text-3xl text-gray-900">Rs. {product.price}</p>
                                 </div>
 
                                 {/* Reviews */}
@@ -366,7 +386,7 @@ export default function Product({ product }) {
                                     />
                                 </div>
 
-                                <form className="mt-6">
+                                <div className="mt-6">
                                     {/* Colors */}
                                     <div>
                                         <h3 className="text-sm text-gray-600">Color</h3>
@@ -383,7 +403,7 @@ export default function Product({ product }) {
                                                                 color.selectedColor,
                                                                 active && checked ? 'ring ring-offset-1' : '',
                                                                 !active && checked ? 'ring-2' : '',
-                                                                '-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none'
+                                                                '-m-0.5 relative p-0.5 flex items-center justify-center cursor-pointer focus:outline-none'
                                                             )
                                                         }
                                                     >
@@ -394,7 +414,7 @@ export default function Product({ product }) {
                                                             aria-hidden="true"
                                                             className={classNames(
                                                                 color.bgColor,
-                                                                'h-8 w-8 border border-black border-opacity-10 rounded-full'
+                                                                'h-8 w-8 border border-black border-opacity-10 '
                                                             )}
                                                         />
                                                     </RadioGroup.Option>
@@ -404,7 +424,7 @@ export default function Product({ product }) {
                                     </div>
 
                                     <div className="mt-10 flex sm:flex-col1">
-                                        <Button>Add to Bag</Button>
+                                        <Button type="button" onClick={() => { addItemToCart(product.id) }} disabled={productQuantity < 1}>Add to Bag</Button>
 
                                         <button
                                             type="button"
@@ -414,57 +434,59 @@ export default function Product({ product }) {
                                             <span className="sr-only">Add to favorites</span>
                                         </button>
                                     </div>
-                                </form>
+                                </div>
 
-                                <section aria-labelledby="details-heading" className="mt-12">
-                                    <h2 id="details-heading" className="sr-only">
-                                        Additional details
-                                    </h2>
+                                {productDetails.length > 0 && productDetails[0].item != null &&
+                                    <section aria-labelledby="details-heading" className="mt-12">
+                                        <h2 id="details-heading" className="font-normal">
+                                            Additional Details
+                                        </h2>
 
-                                    <div className="border-t divide-y divide-gray-200">
-                                        {productDetails.map((detail) => (
-                                            <Disclosure as="div" key={detail.name}>
-                                                {({ open }) => (
-                                                    <>
-                                                        <h3>
-                                                            <Disclosure.Button className="group relative w-full py-6 flex justify-between items-center text-left">
-                                                                <span
-                                                                    className={classNames(
-                                                                        open ? 'text-primaryNavy' : 'text-gray-900',
-                                                                        'text-sm font-medium'
-                                                                    )}
-                                                                >
-                                                                    {detail.name}
-                                                                </span>
-                                                                <span className="ml-6 flex items-center">
-                                                                    {open ? (
-                                                                        <Icon iconName='minus'
-                                                                            className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
-                                                                            aria-hidden="true"
-                                                                        />
-                                                                    ) : (
-                                                                        <Icon
-                                                                            iconName='plus'
-                                                                            className="block h-6 w-6 text-gray-400 group-hover:text-gray-500"
-                                                                            aria-hidden="true"
-                                                                        />
-                                                                    )}
-                                                                </span>
-                                                            </Disclosure.Button>
-                                                        </h3>
-                                                        <Disclosure.Panel as="div" className="pb-6 prose prose-sm">
-                                                            <ul role="list">
-                                                                {detail.items.map((item) => (
-                                                                    <li key={item}>{item}</li>
-                                                                ))}
-                                                            </ul>
-                                                        </Disclosure.Panel>
-                                                    </>
-                                                )}
-                                            </Disclosure>
-                                        ))}
-                                    </div>
-                                </section>
+                                        <div className="border-t divide-y divide-gray-200">
+                                            {productDetails.map((detail) => (
+                                                detail.item != null &&
+                                                <Disclosure as="div" key={detail.name}>
+                                                    {({ open }) => (
+                                                        <>
+                                                            <h3>
+                                                                <Disclosure.Button className="group relative w-full py-6 flex justify-between items-center text-left">
+                                                                    <span
+                                                                        className={classNames(
+                                                                            open ? 'text-primaryNavy' : 'text-gray-900',
+                                                                            'text-sm font-medium'
+                                                                        )}
+                                                                    >
+                                                                        {detail.name}
+                                                                    </span>
+                                                                    <span className="ml-6 flex items-center">
+                                                                        {open ? (
+                                                                            <Icon iconName='minus'
+                                                                                className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
+                                                                                aria-hidden="true"
+                                                                            />
+                                                                        ) : (
+                                                                            <Icon
+                                                                                iconName='plus'
+                                                                                className="block h-6 w-6 text-gray-400 group-hover:text-gray-500"
+                                                                                aria-hidden="true"
+                                                                            />
+                                                                        )}
+                                                                    </span>
+                                                                </Disclosure.Button>
+                                                            </h3>
+                                                            <Disclosure.Panel as="div" className="pb-6 prose prose-sm">
+                                                                <ul role="list">
+                                                                    {extractArraysFromText(detail.item).map((item) => (
+                                                                        <li key={item}>{item}</li>
+                                                                    ))}
+                                                                </ul>
+                                                            </Disclosure.Panel>
+                                                        </>
+                                                    )}
+                                                </Disclosure>
+                                            ))}
+                                        </div>
+                                    </section>}
                             </div>
                         </div>
 
@@ -497,12 +519,12 @@ export default function Product({ product }) {
                                             </div>
                                         </div>
                                         <div className="mt-6">
-                                            <a
+                                            <Button
                                                 href={product.href}
                                                 className="relative flex bg-gray-100 border border-transparent rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-200"
                                             >
                                                 Add to bag<span className="sr-only">, {product.name}</span>
-                                            </a>
+                                            </Button>
                                         </div>
                                     </div>
                                 ))}
@@ -513,3 +535,12 @@ export default function Product({ product }) {
             </div> : <Skeleton></Skeleton>
     )
 }
+
+const mapStateToProps = ({ cart }) => {
+    return cart
+}
+
+const mapDispatchToProps = {
+    addCartItem
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Product)

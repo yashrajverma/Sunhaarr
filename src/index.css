@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Roboto", sans-serif;
 
   /* Customize the scrollbar width */
   ::-webkit-scrollbar {
@@ -17,7 +17,7 @@
 
   /* Customize the scrollbar thumb */
   ::-webkit-scrollbar-thumb {
-    background: #0A2239;
+    background: #0a2239;
   }
 
   /* Customize the scrollbar thumb on hover */

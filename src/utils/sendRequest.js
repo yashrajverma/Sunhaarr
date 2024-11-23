@@ -1,5 +1,6 @@
 import axios from "axios";
 import { API_BASE_URL, HTTP_STATUS_CODES } from "../constants";
+const user = JSON.parse(localStorage.getItem("persist:root")).user;
 
 export const sendRequest = async ({
   url,
@@ -9,7 +10,9 @@ export const sendRequest = async ({
   isExternalAPI,
 }) => {
   const isJSON = contentType === "application/json";
-  const headers = isJSON ? { "Content-Type": contentType } : {};
+  const headers = isJSON
+    ? { "Content-Type": contentType, "XSRF-TOKEN": user.token }
+    : {};
 
   try {
     const response = await axios({
