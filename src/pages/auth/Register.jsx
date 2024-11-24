@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { BrandName } from '../../constants'
 import Button from '../../components/Button'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { register } from '../../routines'
 
-const Register = ({ registerUser }) => {
+const Register = ({ registerUser, user }) => {
     const [registerData, setRegisterData] = useState({
         first_name: "",
         last_name: "",
@@ -20,6 +20,12 @@ const Register = ({ registerUser }) => {
     const handleSubmit = () => {
         registerUser(registerData)
     }
+
+    if (user && user.token) {
+
+        return <Navigate to={'/'} />
+    }
+
     return (
         <div className="py-16">
             <div className="flex bg-softPeach shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
@@ -67,4 +73,8 @@ const Register = ({ registerUser }) => {
 const mapDispatchToProps = {
     registerUser: register
 }
-export default connect(null, mapDispatchToProps)(Register)
+
+const mapStateToProps = ({ user }) => {
+    return { user }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Register)

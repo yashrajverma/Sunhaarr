@@ -20,7 +20,11 @@ const userReducer = handleActions(
     },
 
     [register.SUCCESS]: (state, { payload }) => {
-      return payload;
+      const data = payload.user;
+      delete payload.user;
+      const userData = { ...data, ...payload };
+      localStorage.setItem("token", payload.token);
+      return userData;
     },
 
     [login.SUCCESS]: (state, { payload }) => {
