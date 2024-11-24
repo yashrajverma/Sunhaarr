@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Icon from '../../components/Icon';
 import Button from '../../components/Button';
+import { connect } from 'react-redux';
+import { addAddress } from '../../routines';
 
 const AddressCard = ({ props, idx, setEditAddress, setEditAddressObject }) => {
     const { id, first_name, address1, city, last_name } = props
@@ -27,146 +29,165 @@ const AddressCard = ({ props, idx, setEditAddress, setEditAddressObject }) => {
     </div>)
 };
 
-const EditAddress = ({ address, setEditAddress, setEditAddressObject }) => {
-    const { id, first_name, address1, city, last_name, address2, state, is_primary_address, country, zip } = address ? address : {}
+const EditAddress = ({ address, setEditAddress, setEditAddressObject, addAddress }) => {
+
+    const [addressObj, setAddressObj] = useState({ ...address })
+
+    const handleAddressChange = () => {
+        if (addressObj.id != undefined) {
+            updateAddress()
+        } else {
+            addAddress(addressObj)
+        }
+    }
+
+    const handleOnChange = ({ target: { name, value } }) => {
+        setAddressObj({ ...addressObj, [name]: value })
+    }
     return (<div class="max-w-full mx-auto p-6 bg-white border border-gray-200 ">
-        <form>
-            <div className='flex justify-between items-center gap-2'>
+        <div className='flex justify-between items-center gap-2'>
 
-                <div class="mb-4 w-full">
-                    <label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
-                    <input
-                        type="text"
-                        id="first_name"
-                        name="first_name"
-                        class="mt-1 block w-full border-gray-300  shadow-sm focus:ring-primaryNavy focus:border-primaryNavy sm:text-sm"
-                        value={first_name}
-                    />
-                </div>
-
-
-                <div class="mb-4 w-full">
-                    <label for="last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
-                    <input
-                        type="text"
-                        id="last_name"
-                        name="last_name"
-                        class="mt-1 block w-full border-gray-300  shadow-sm focus:ring-primaryNavy focus:border-primaryNavy sm:text-sm"
-                        value={last_name}
-                    />
-                </div>
-            </div>
-            <div className='flex justify-between items-center gap-2'>
-                <div class="mb-4 w-full">
-                    <label for="address1" class="block text-sm font-medium text-gray-700">Address Line 1</label>
-                    <input
-                        type="text"
-                        id="address1"
-                        name="address1"
-                        class="mt-1 block w-full border-gray-300  shadow-sm focus:ring-primaryNavy focus:border-primaryNavy sm:text-sm"
-                        value={address1}
-                    />
-                </div>
-
-
-                <div class="mb-4 w-full">
-                    <label for="address2" class="block text-sm font-medium text-gray-700">Address Line 2</label>
-                    <input
-                        type="text"
-                        id="address2"
-                        name="address2"
-                        class="mt-1 block w-full border-gray-300  shadow-sm focus:ring-primaryNavy focus:border-primaryNavy sm:text-sm"
-                        value={address2}
-                    />
-                </div>
-            </div>
-
-
-
-
-            <div class="mb-4">
-                <label for="city" class="block text-sm font-medium text-gray-700">City</label>
+            <div class="mb-4 w-full">
+                <label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
                 <input
                     type="text"
-                    id="city"
-                    name="city"
+                    id="first_name"
+                    name="first_name"
                     class="mt-1 block w-full border-gray-300  shadow-sm focus:ring-primaryNavy focus:border-primaryNavy sm:text-sm"
-                    value={city}
+                    onChange={handleOnChange}
+                    value={addressObj.first_name}
                 />
             </div>
 
-            <div class="mb-4">
-                <label for="zip" class="block text-sm font-medium text-gray-700">ZIP Code</label>
+
+            <div class="mb-4 w-full">
+                <label for="last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
                 <input
                     type="text"
-                    id="zip"
-                    name="zip"
+                    id="last_name"
+                    name="last_name"
                     class="mt-1 block w-full border-gray-300  shadow-sm focus:ring-primaryNavy focus:border-primaryNavy sm:text-sm"
-                    value={zip}
+                    onChange={handleOnChange}
+                    value={addressObj.last_name}
                 />
             </div>
-            <div className='flex justify-between items-center gap-2'>
+        </div>
 
-                <div class="mb-4 w-full">
-                    <label for="state" class="block text-sm font-medium text-gray-700">State</label>
-                    <input
-                        type="text"
-                        id="state"
-                        name="state"
-                        class="mt-1 block w-full border-gray-300  shadow-sm focus:ring-primaryNavy focus:border-primaryNavy sm:text-sm"
-                        value={state}
-                    />
-                </div>
-
-
-                <div class="mb-4 w-full">
-                    <label for="country" class="block text-sm font-medium text-gray-700">Country</label>
-                    <input
-                        type="text"
-                        id="country"
-                        name="country"
-                        class="mt-1 block w-full border-gray-300  shadow-sm focus:ring-primaryNavy focus:border-primaryNavy sm:text-sm"
-                        value={country}
-                    />
-                </div>
-
-            </div>
-            <div class="mb-4">
-                <label for="is_primary_address" class="inline-flex items-center">
-                    <input
-                        type="checkbox"
-                        id="is_primary_address"
-                        name="is_primary_address"
-                        class="rounded border-gray-300 text-primaryNavy shadow-sm focus:ring-primaryNavy"
-                        checked={is_primary_address}
-                    />
-                    <span class="ml-2 text-sm text-gray-700">Primary Address</span>
-                </label>
+        <div className='flex justify-between items-center gap-2'>
+            <div class="mb-4 w-full">
+                <label for="address1" class="block text-sm font-medium text-gray-700">Address Line 1</label>
+                <input
+                    type="text"
+                    id="address1"
+                    name="address1"
+                    class="mt-1 block w-full border-gray-300  shadow-sm focus:ring-primaryNavy focus:border-primaryNavy sm:text-sm"
+                    onChange={handleOnChange}
+                    value={addressObj.address1}
+                />
             </div>
 
 
-            <div className='flex justify-between items-center gap-5'>
-                <button
-                    type="submit"
-                    class="w-full flex-1 bg-accentGold text-white py-2 px-4 shadow hover:bg-primaryNavy focus:outline-none focus:ring-2 focus:ring-primaryNavy focus:ring-offset-2"
-                >
-                    Save
-                </button>
-                <button className='border-2 border-primaryNavy py-2 px-4' onClick={() => {
-                    setEditAddress(false);
-                    setEditAddressObject(null)
-                }
-                }>
-                    Cancel
-                </button>
+            <div class="mb-4 w-full">
+                <label for="address2" class="block text-sm font-medium text-gray-700">Address Line 2</label>
+                <input
+                    type="text"
+                    id="address2"
+                    name="address2"
+                    class="mt-1 block w-full border-gray-300  shadow-sm focus:ring-primaryNavy focus:border-primaryNavy sm:text-sm"
+                    onChange={handleOnChange}
+                    value={addressObj.address2}
+                />
+            </div>
+        </div>
+
+
+        <div class="mb-4">
+            <label for="city" class="block text-sm font-medium text-gray-700">City</label>
+            <input
+                type="text"
+                id="city"
+                name="city"
+                class="mt-1 block w-full border-gray-300  shadow-sm focus:ring-primaryNavy focus:border-primaryNavy sm:text-sm"
+                onChange={handleOnChange}
+                value={addressObj.city}
+            />
+        </div>
+
+        <div class="mb-4">
+            <label for="zip" class="block text-sm font-medium text-gray-700">ZIP Code</label>
+            <input
+                type="text"
+                id="zip"
+                name="zip"
+                class="mt-1 block w-full border-gray-300  shadow-sm focus:ring-primaryNavy focus:border-primaryNavy sm:text-sm"
+                onChange={handleOnChange}
+                value={addressObj.zip}
+            />
+        </div>
+        <div className='flex justify-between items-center gap-2'>
+
+            <div class="mb-4 w-full">
+                <label for="state" class="block text-sm font-medium text-gray-700">State</label>
+                <input
+                    type="text"
+                    id="state"
+                    name="state"
+                    class="mt-1 block w-full border-gray-300  shadow-sm focus:ring-primaryNavy focus:border-primaryNavy sm:text-sm"
+                    onChange={handleOnChange}
+                    value={addressObj.state}
+                />
             </div>
 
-        </form>
+
+            <div class="mb-4 w-full">
+                <label for="country" class="block text-sm font-medium text-gray-700">Country</label>
+                <input
+                    type="text"
+                    id="country"
+                    name="country"
+                    class="mt-1 block w-full border-gray-300  shadow-sm focus:ring-primaryNavy focus:border-primaryNavy sm:text-sm"
+                    onChange={handleOnChange}
+                    value={addressObj.country}
+                />
+            </div>
+
+        </div>
+        <div class="mb-4">
+            <label for="is_primary_address" class="inline-flex items-center">
+                <input
+                    type="checkbox"
+                    id="is_primary_address"
+                    name="is_primary_address"
+                    class="rounded border-gray-300 text-primaryNavy shadow-sm focus:ring-primaryNavy"
+                    onChange={handleOnChange}
+                    checked={addressObj.is_primary_address}
+                />
+                <span class="ml-2 text-sm text-gray-700">Primary Address</span>
+            </label>
+        </div>
+
+
+        <div className='flex justify-between items-center gap-5'>
+            <button
+                type="submit"
+                class="w-full flex-1 bg-accentGold text-white py-2 px-4 shadow hover:bg-primaryNavy focus:outline-none focus:ring-2 focus:ring-primaryNavy focus:ring-offset-2"
+                onClick={handleAddressChange}
+            >
+                Save
+            </button>
+            <button className='border-2 border-primaryNavy py-2 px-4' onClick={() => {
+                setEditAddress(false);
+                setEditAddressObject(null)
+            }
+            }>
+                Cancel
+            </button>
+        </div>
     </div>
     )
 }
 
-const AddressBook = () => {
+const AddressBook = ({ addAddress }) => {
     const [editAddress, setEditAddress] = useState(false)
     const [editAddressObject, setEditAddressObject] = useState(null)
     const address = [
@@ -222,9 +243,16 @@ const AddressBook = () => {
                     )
                 })}
             </div>}
-            {editAddress && <EditAddress address={editAddressObject} setEditAddress={setEditAddress} setEditAddressObject={setEditAddressObject} />}
+            {editAddress && <EditAddress
+                address={editAddressObject}
+                setEditAddress={setEditAddress}
+                setEditAddressObject={setEditAddressObject}
+                addAddress={addAddress}
+            />}
         </div>
     )
 }
-
-export default AddressBook
+const mapDispatchToProps = {
+    addAddress
+}
+export default connect(null, mapDispatchToProps)(AddressBook)

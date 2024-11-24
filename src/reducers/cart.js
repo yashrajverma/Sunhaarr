@@ -1,14 +1,23 @@
 import { handleActions } from "redux-actions";
 
-import { addCartItem } from "../routines";
+import { addCartItem, deleteCartItem, getCartItem } from "../routines";
 
 const defaultState = [];
 const cartReducer = handleActions(
   {
     [addCartItem.SUCCESS]: (state, { payload }) => {
-      const { products } = payload;
+      return { ...payload };
+    },
 
-      return { ...state, products };
+    [getCartItem.SUCCESS]: (state, { payload }) => {
+      return payload;
+    },
+
+    [deleteCartItem.SUCCESS]: (state, { payload }) => {
+      // console.log(state, payload);
+
+      // const cartState=state.cartItems.filter((cart)=>cart.)
+      return state;
     },
   },
   defaultState

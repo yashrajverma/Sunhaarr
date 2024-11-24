@@ -7,6 +7,7 @@ import Skeleton from '../Skeleton'
 import { connect } from 'react-redux'
 import { addCartItem } from '../../routines'
 import extractArraysFromText from '../../utils/textToArray'
+import { Navigate } from 'react-router-dom'
 
 const navigation = {
     categories: [
@@ -282,7 +283,8 @@ function Product({ product, addCartItem, cart }) {
 
 
     const addItemToCart = (productId) => {
-        addCartItem({ productId, quantity: 1 })
+        addCartItem({ productId, quantity: 1 });
+        <Navigate to={'/cart'} />
     }
 
     return (
@@ -522,6 +524,7 @@ function Product({ product, addCartItem, cart }) {
                                             <Button
                                                 href={product.href}
                                                 className="relative flex bg-gray-100 border border-transparent rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-200"
+                                                onClick={() => { addItemToCart(product.id) }}
                                             >
                                                 Add to bag<span className="sr-only">, {product.name}</span>
                                             </Button>

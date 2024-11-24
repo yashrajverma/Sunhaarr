@@ -5,9 +5,12 @@ export const API_BASE_URL =
 export const BrandName = "Sunhaarr";
 export const API_URL = {
   user: "/register",
+  login: "/login",
   products: "/products",
   cart: "/cart",
   cartItem: "/item",
+  address: "/address",
+  logout: "/logout",
 };
 
 export const HTTP_STATUS_CODES = {

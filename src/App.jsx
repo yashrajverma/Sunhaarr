@@ -16,16 +16,11 @@ import { sendRequest } from "./utils/sendRequest";
 import { useEffect } from "react";
 import { user } from "./routines"
 import Account from "./pages/Account"
+import Authenticated from "./layout/Authenticated"
 
 function App({ user, userData }) {
   const routesItems = [
-    { path: '/', element: <Home /> },
-    { path: '/login', element: <Login /> },
-    { path: '/register', element: <Register /> },
-    { path: '/products', element: <ProductCategories /> },
     { path: '/cart', element: <Cart /> },
-    { path: '/product/:id', element: <ProductPage /> },
-    { path: '*', element: <NotFound404 /> },
     { path: '/wishlist', element: <Wishlist /> },
     { path: '/privacy-policy', element: <PrivacyPolicy /> },
     { path: '/jewel-care', element: <JewelCare /> },
@@ -35,22 +30,30 @@ function App({ user, userData }) {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (!userData.isAuthenticated) {
-      (async function get() {
-        const { csrfToken } = await sendRequest({ url: '/register' });
+    (async function get() {
+      const { csrfToken } = await sendRequest({ url: '/register' });
+      localStorage.setItem("csrfToken", csrfToken);
 
-        dispatch(user(csrfToken));
-      })()
-    }
+    })()
   }, [])
 
   return (
     <>
       <Navbar />
       <Routes>
-        {routesItems.map(({ path, element }, index) => (
-          <Route key={index} path={path} element={element} />
-        ))}
+        <Route element={<Authenticated />}>
+          {routesItems.map(({ path, element }, index) => (
+            <Route key={index} path={path} element={element} />
+          ))}
+        </Route>
+
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/' element={<Home />} />
+        <Route path='*' element={<NotFound404 />} />
+        <Route path='/products' element={<ProductCategories />} />
+        <Route path='/product/:id' element={<ProductPage />} />
+
       </Routes>
       <Footer />
     </>

@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import NavbarItemsList from "./navbarItemsList";
 import Icon from "../Icon";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { connect, useSelector } from "react-redux";
+import checkTokenExpired from "../../utils/checkTokenExpired";
+import { BrandName } from "../../constants";
 
-const Navbar = () => {
+const Navbar = ({ cartItems, user }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navbarItems = [
@@ -42,13 +44,11 @@ const Navbar = () => {
     { type: 'link', label: 'Best Sellers', href: '/products?category=best_sellers' }
   ];
 
-  const { user } = useSelector((state) => state);
-
   return (
     <div className="w-full bg-softPeach h-max py-3 border-b border-gray-600">
       <div className="block text-center mb-3 md:hidden">
         <Link to="/">
-          <h1 className="text-accentGold text-2xl font-bold">Sunhaarr.com</h1>
+          <h1 className="text-accentGold text-2xl font-bold stroke-primaryNavy stroke-2 ">{BrandName}.com</h1>
         </Link>
       </div>
       <div className="flex justify-between px-6 md:px-16 items-center">
@@ -57,7 +57,7 @@ const Navbar = () => {
           <Icon iconName="magnifyingglass" size="w-4 h-4" />
           <input
             placeholder="What are you looking for?"
-            className="rounded-md text-sm bg-transparent w-full md:w-auto w-full border-none outline-none p-2 focus:border-none focus:outline-none focus:ring-0"
+            className="rounded-md text-sm bg-transparent w-full md:w-auto border-none outline-none p-2 focus:border-none focus:outline-none focus:ring-0"
           />
 
         </div>
@@ -65,7 +65,7 @@ const Navbar = () => {
         {/* Center: Logo */}
         <div className="hidden md:block">
           <Link to="/">
-            <h1 className="text-accentGold text-2xl font-bold">Sunhaarr.com</h1>
+            <h1 className="text-accentGold text-2xl font-bold stroke-primaryNavy stroke-2 ">{BrandName}.com</h1>
           </Link>
         </div>
 
@@ -73,14 +73,14 @@ const Navbar = () => {
         <div className="flex items-center gap-2 md:gap-1">
           {/* Desktop Icons */}
           <div className="hidden md:flex gap-1">
-            <Link to={user.isAuthenticated ? '/account' : '/login'}>
+            <Link to={checkTokenExpired(user.expires) ? '/account' : '/login'}>
               <Icon iconName="user" color="text-primaryNavy" />
             </Link>
             <Link to='/wishlist'>
               <Icon iconName="heart" color="text-primaryNavy" />
             </Link>
             <Link to="/cart">
-              <Icon iconName="shoppingbag" color="text-primaryNavy" hasBadge badgeText="0" />
+              <Icon iconName="shoppingbag" color="text-primaryNavy" hasBadge badgeText={cartItems} />
             </Link>
           </div>
 
@@ -104,6 +104,17 @@ const Navbar = () => {
           </button>
           <div className="mt-10">
             <NavbarItemsList items={navbarItems} />
+            <div className="mt-3 flex gap-1">
+              <Link to={checkTokenExpired(user.expires) ? '/account' : '/login'}>
+                <Icon iconName="user" color="text-primaryNavy" />
+              </Link>
+              <Link to='/wishlist'>
+                <Icon iconName="heart" color="text-primaryNavy" />
+              </Link>
+              <Link to="/cart">
+                <Icon iconName="shoppingbag" color="text-primaryNavy" hasBadge badgeText={cartItems} />
+              </Link>
+            </div>
           </div>
         </div>
       )}
@@ -111,4 +122,13 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+Navbar.defaultProps = {
+  user: {},
+  cartItems: 0
+}
+
+const mapStateToProps = ({ user }) => {
+  const cartLength = user.cartItems != null ? user.cartItems.length : 0
+  return { cartItems: cartLength, user }
+}
+export default connect(mapStateToProps, null)(Navbar);

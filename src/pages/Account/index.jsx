@@ -1,18 +1,20 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { useEffect } from 'react'
 
-import { NavLink, useSearchParams } from 'react-router-dom'
+import { Navigate, NavLink, useSearchParams } from 'react-router-dom'
 import Dashboard from './Dashboard'
 import AddressBook from './AddressBook'
 import PaymentMethod from './PaymentMethod'
 import Orders from './Orders'
+import { connect } from 'react-redux'
+import { logoutUser } from '../../routines'
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
 
-function Account() {
+function Account({ user, logoutUser }) {
     const [search, setSearch] = useSearchParams();
     const currentTab = search.get('section') || '...';
     const navigation = [
@@ -25,15 +27,20 @@ function Account() {
     useEffect(() => {
         setSearch('section=dashboard')
     }, [])
+
+    const logout = () => {
+        logoutUser();
+        <Navigate to='/' />
+    }
     return (
         <>
             <div className="min-h-screen md:flex ">
-                <Disclosure as="nav" className="">
+                <Disclosure as="nav" className="w-[20%]">
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div className="flex md:h-screen items-start md:mt-5 justify-between">
                             <div className="flex md:flex-col items-center">
-                                <div className="md:block">
-                                    <div className="mt-10 flex md:flex-col items-baseline space-x-4">
+                                <div className="md:block mx-0 overflow-x-auto w-screen md:w-auto">
+                                    <div className="mt-10 flex md:flex-col items-baseline ">
                                         {navigation.map((item) => (
                                             <NavLink
                                                 key={item.name}
@@ -47,6 +54,7 @@ function Account() {
                                                 {item.name}
                                             </NavLink>
                                         ))}
+                                        <button className='w-full px-3 py-2 text-sm font-medium my-2 bg-red-600 text-white hover:bg-red-700' onClick={() => logout()}>Logout</button>
                                     </div>
                                 </div>
                             </div>
@@ -69,6 +77,11 @@ function Account() {
                                     {item.name}
                                 </DisclosureButton>
                             ))}
+                            <button className='w-full px-3 py-2 text-sm font-medium my-2 bg-red-600 text-white hover:bg-red-700'
+                                onClick={() => logout()}>
+                                Logout
+                            </button>
+
                         </div>
                     </DisclosurePanel>
                 </Disclosure>
@@ -79,7 +92,7 @@ function Account() {
                     </div>
                     <main>
                         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                            {currentTab == 'dashboard' && <Dashboard />}
+                            {currentTab == 'dashboard' && <Dashboard user={user} />}
                             {currentTab == 'address' && <AddressBook />}
                             {currentTab == 'payment' && <PaymentMethod />}
                             {currentTab == 'orders' && <Orders />}
@@ -91,5 +104,11 @@ function Account() {
         </>
     )
 }
+const mapStateToProps = ({ user }) => {
+    return { user }
+}
 
-export default Account
+const mapDispatchToProps = {
+    logoutUser
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Account)

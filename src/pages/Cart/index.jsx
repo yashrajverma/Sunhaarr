@@ -1,43 +1,28 @@
+import { connect } from "react-redux"
 import Button from "../../components/Button"
 import Icon from "../../components/Icon"
+import { deleteCartItem, getCartItem } from "../../routines"
+import { useEffect } from "react";
+import emptyCart from '../../assets/images/emptyCart.svg'
 
-const products = [
-    {
-        id: 1,
-        name: 'Basic Tee',
-        href: '#',
-        price: '$32.00',
-        color: 'Sienna',
-        inStock: true,
-        size: 'Large',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-01.jpg',
-        imageAlt: "Front of men's Basic Tee in sienna.",
-    },
-    {
-        id: 2,
-        name: 'Basic Tee',
-        href: '#',
-        price: '$32.00',
-        color: 'Black',
-        inStock: false,
-        leadTime: '3–4 weeks',
-        size: 'Large',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-02.jpg',
-        imageAlt: "Front of men's Basic Tee in black.",
-    },
-    {
-        id: 3,
-        name: 'Nomad Tumbler',
-        href: '#',
-        price: '$35.00',
-        color: 'White',
-        inStock: true,
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-03.jpg',
-        imageAlt: 'Insulated bottle with white base and black snap lid.',
-    },
-]
+function Cart({ getCartItem, products, cart, deleteCartItem }) {
+    useEffect(() => {
+        getCartItem()
+    }, []);
 
-export default function Cart() {
+    if (products.length <= 0 && cart) {
+
+        return (
+            <div className="w-screen h-screen flex flex-col justify-center items-center">
+                <h1 className="text-3xl md:text-5xl font-bold mb-5">No Items In Cart</h1>
+                <img src={emptyCart} alt={'No Items'} className="w-56 h-56  md:w-72 md:h-72" />
+                <Button href={'/products'} className={'w-auto'}>Shop Now</Button>
+            </div>)
+    };
+
+    const deleteCart = (id) => {
+        deleteCartItem(id)
+    }
     return (
         <>
             <div className="bg-white">
@@ -76,39 +61,34 @@ export default function Cart() {
                                                             <p className="ml-4 pl-4 border-l border-gray-200 text-gray-500">{product.size}</p>
                                                         ) : null}
                                                     </div>
-                                                    <p className="mt-1 text-sm font-medium text-primaryNavy">{product.price}</p>
+                                                    <p className="mt-1 text-sm font-medium text-primaryNavy">Rs. {product.total_price}</p>
                                                 </div>
 
                                                 <div className="mt-4 sm:mt-0 sm:pr-9">
                                                     <label htmlFor={`quantity-${productIdx}`} className="sr-only">
-                                                        Quantity, {product.name}
+                                                        Quantity, {product.quantity}
                                                     </label>
-                                                    <select
-                                                        id={`quantity-${productIdx}`}
-                                                        name={`quantity-${productIdx}`}
-                                                        className="max-w-full rounded-md border border-gray-300 py-1.5 text-base leading-5 font-medium text-gray-700 text-left shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                                    >
-                                                        <option value={1}>1</option>
-                                                        <option value={2}>2</option>
-                                                        <option value={3}>3</option>
-                                                        <option value={4}>4</option>
-                                                        <option value={5}>5</option>
-                                                        <option value={6}>6</option>
-                                                        <option value={7}>7</option>
-                                                        <option value={8}>8</option>
-                                                    </select>
+                                                    <div className="relative flex items-center max-w-[8rem]">
+                                                        <button type="button" id="decrement-button" className="   dark:border-primaryNavy hover:bg-gray-200 border border-gray-300 p-2 h-11 ">
+                                                            <Icon iconName='minus' />
+                                                        </button>
+                                                        <input value={product.quantity} onChange={(e) => { setProductQuantity(e.target.value) }} type="text" id="quantity-input" className=" font-semibold bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-primaryNavy text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-primaryNavy dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                                        <button type="button" id="increment-button" className="   dark:border-primaryNavy hover:bg-gray-200 border border-gray-300 p-2 h-11 ">
+                                                            <Icon iconName='plus' />
+                                                        </button>
+                                                    </div>
 
-                                                    <div className="absolute top-0 right-0">
-                                                        <button type="button" className="-m-2 p-2 inline-flex text-gray-400 hover:text-gray-500">
+                                                    <div className="absolute top-0 right-0" onClick={() => deleteCart(product.product_id)}>
+                                                        <button type="button" className="-m-2 p-2 inline-flex text-red-700 hover:text-gray-500">
                                                             <span className="sr-only">Remove</span>
-                                                            <Icon iconName="circleclose" className="h-5 w-5" aria-hidden="true" />
+                                                            <Icon iconName="trash" className="h-5 w-5" color={'red-700'} aria-hidden="true" />
                                                         </button>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <p className="mt-4 flex text-sm text-gray-700 space-x-2">
-                                                {product.inStock ? (
+                                                {product.in_stock ? (
                                                     <Icon iconName="check" className="flex-shrink-0 h-5 w-5 text-green-500" aria-hidden="true" />
                                                 ) : (
                                                     <Icon iconName="clock" className="flex-shrink-0 h-5 w-5 text-gray-300" aria-hidden="true" />
@@ -134,7 +114,7 @@ export default function Cart() {
                             <dl className="mt-6 space-y-4">
                                 <div className="flex items-center justify-between">
                                     <dt className="text-sm text-gray-600">Subtotal</dt>
-                                    <dd className="text-sm font-medium text-primaryNavy">$99.00</dd>
+                                    <dd className="text-sm font-medium text-primaryNavy">Rs.{cart.total}</dd>
                                 </div>
                                 <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
                                     <dt className="flex items-center text-sm text-gray-600">
@@ -144,7 +124,7 @@ export default function Cart() {
                                             <Icon iconName="questionmarkcircle" className="h-5 w-5" aria-hidden="true" />
                                         </a>
                                     </dt>
-                                    <dd className="text-sm font-medium text-primaryNavy">$5.00</dd>
+                                    <dd className="text-sm font-medium text-primaryNavy">Rs. 5.00</dd>
                                 </div>
                                 <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
                                     <dt className="flex text-sm text-gray-600">
@@ -154,11 +134,11 @@ export default function Cart() {
                                             <Icon iconName="questionmarkcircle" className="h-5 w-5" aria-hidden="true" />
                                         </a>
                                     </dt>
-                                    <dd className="text-sm font-medium text-primaryNavy">$8.32</dd>
+                                    <dd className="text-sm font-medium text-primaryNavy">Rs. 8.32</dd>
                                 </div>
                                 <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
                                     <dt className="text-base font-medium text-primaryNavy">Order total</dt>
-                                    <dd className="text-base font-medium text-primaryNavy">$112.32</dd>
+                                    <dd className="text-base font-medium text-primaryNavy">Rs. {cart.total + 5 + 8.32}</dd>
                                 </div>
                             </dl>
 
@@ -172,3 +152,18 @@ export default function Cart() {
         </>
     )
 }
+
+Cart.defaultProps = {
+    products: [],
+    cart: {}
+}
+
+const mapStateToProps = ({ user }) => {
+    return { products: user.cartItems != null ? user.cartItems : [], cart: user.cart == null ? {} : user.cart }
+}
+const mapDispatchToProps = {
+    getCartItem,
+    deleteCartItem
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart)

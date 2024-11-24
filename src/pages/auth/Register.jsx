@@ -1,9 +1,25 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { BrandName } from '../../constants'
 import Button from '../../components/Button'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { register } from '../../routines'
 
-const Register = () => {
+const Register = ({ registerUser }) => {
+    const [registerData, setRegisterData] = useState({
+        first_name: "",
+        last_name: "",
+        email: '',
+        password: ''
+    });
+
+    const handleOnChange = ({ target: { name, value } }) => {
+        setRegisterData({ ...registerData, [name]: value })
+    };
+
+    const handleSubmit = () => {
+        registerUser(registerData)
+    }
     return (
         <div className="py-16">
             <div className="flex bg-softPeach shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
@@ -13,22 +29,22 @@ const Register = () => {
                     <div className='flex justify-between gap-1'>
                         <div className="mt-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2">First Name</label>
-                            <input placeholder='jhon@doe.com' className="bg-white text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 py-2 px-4 block w-full appearance-none" type="text" />
+                            <input onChange={handleOnChange} name='first_name' placeholder='jhon' className="bg-white text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 py-2 px-4 block w-full appearance-none" type="text" />
                         </div>
                         <div className="mt-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2">Last Name</label>
-                            <input placeholder='jhon@doe.com' className="bg-white text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 py-2 px-4 block w-full appearance-none" type="text" />
+                            <input onChange={handleOnChange} name='last_name' placeholder='doe' className="bg-white text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 py-2 px-4 block w-full appearance-none" type="text" />
                         </div>
                     </div>
                     <div className="mt-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2">Email Address</label>
-                        <input placeholder='jhon@doe.com' className="bg-white text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 py-2 px-4 block w-full appearance-none" type="email" />
+                        <input onChange={handleOnChange} name='email' placeholder='jhon@doe.com' className="bg-white text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 py-2 px-4 block w-full appearance-none" type="email" />
                     </div>
                     <div className="mt-4">
                         <div className="flex justify-between">
                             <label className="block text-gray-700 text-sm font-bold mb-2">Password</label>
                         </div>
-                        <input placeholder='******' className="bg-white text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 py-2 px-4 block w-full appearance-none" type="password" />
+                        <input onChange={handleOnChange} name='password' placeholder='******' className="bg-white text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 py-2 px-4 block w-full appearance-none" type="password" />
                     </div>
                     <div className='mt-4'>
                         <div className="flex justify-end items-center">
@@ -37,7 +53,7 @@ const Register = () => {
                         </div>
                     </div>
                     <div className="mt-4">
-                        <Button style={{ width: '100%', fontWeight: 700 }} >Register</Button>
+                        <Button style={{ width: '100%', fontWeight: 700 }} onClick={handleSubmit}>Register</Button>
                     </div>
                 </div>
                 <div className="hidden lg:block lg:w-1/2 bg-cover"
@@ -48,4 +64,7 @@ const Register = () => {
     )
 }
 
-export default Register
+const mapDispatchToProps = {
+    registerUser: register
+}
+export default connect(null, mapDispatchToProps)(Register)

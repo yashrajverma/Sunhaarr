@@ -1,9 +1,27 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { BrandName } from '../../constants'
 import Button from '../../components/Button'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { login } from '../../routines'
 
-const Login = () => {
+const Login = ({ user, loginUser }) => {
+    const [loginData, setLoginData] = useState({
+        email: '',
+        password: ''
+    });
+
+    const handleOnChange = ({ target: { name, value } }) => {
+        setLoginData({ ...loginData, [name]: value })
+    };
+    const handleLogin = () => {
+        loginUser(loginData)
+    }
+
+    if (user && user.token) {
+
+        return <Navigate to={'/'} />
+    }
     return (
         <div className="py-16">
             <div className="flex bg-softPeach shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
@@ -15,14 +33,14 @@ const Login = () => {
                     <p className="text-xl text-gray-600 text-center">Welcome back!</p>
                     <div className="mt-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2">Email Address</label>
-                        <input placeholder='jhon@doe.com' className="bg-white text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 py-2 px-4 block w-full appearance-none" type="email" />
+                        <input onChange={handleOnChange} name='email' placeholder='jhon@doe.com' className="bg-white text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 py-2 px-4 block w-full appearance-none" type="email" />
                     </div>
                     <div className="mt-4">
                         <div className="flex justify-between">
                             <label className="block text-gray-700 text-sm font-bold mb-2">Password</label>
                             <a href="#" className="text-xs text-gray-500">Forget Password?</a>
                         </div>
-                        <input placeholder='******' className="bg-white text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 py-2 px-4 block w-full appearance-none" type="password" />
+                        <input onChange={handleOnChange} name='password' placeholder='******' className="bg-white text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 py-2 px-4 block w-full appearance-none" type="password" />
                     </div>
                     <div className='mt-4'>
                         <div className="flex justify-end items-center">
@@ -31,12 +49,19 @@ const Login = () => {
                         </div>
                     </div>
                     <div className="mt-4">
-                        <Button href='/' >LogIn</Button>
+                        <Button onClick={handleLogin} >LogIn</Button>
                     </div>
                 </div>
             </div>
         </div>
     )
-}
+};
 
-export default Login
+const mapStateToProps = ({ user }) => {
+
+    return { user }
+}
+const mapDispatchToProps = {
+    loginUser: login
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

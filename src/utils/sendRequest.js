@@ -1,9 +1,6 @@
 import axios from "axios";
 import { API_BASE_URL, HTTP_STATUS_CODES } from "../constants";
-const user = JSON.parse(localStorage.getItem("persist:root"))?.user || {
-  token: "",
-};
-
+axios.defaults.withCredentials = true;
 export const sendRequest = async ({
   url,
   method = "GET",
@@ -11,9 +8,15 @@ export const sendRequest = async ({
   contentType = "application/json",
   isExternalAPI,
 }) => {
+  const csrfToken = localStorage.getItem("csrfToken");
+  const token = localStorage.getItem("token");
   const isJSON = contentType === "application/json";
   const headers = isJSON
-    ? { "Content-Type": contentType, "XSRF-TOKEN": user.token }
+    ? {
+        "Content-Type": contentType,
+        "XSRF-TOKEN": csrfToken,
+        Authorization: `Bearer ${token}`,
+      }
     : {};
 
   try {
@@ -21,6 +24,7 @@ export const sendRequest = async ({
       url: `${isExternalAPI ? "" : API_BASE_URL}${url}`,
       method,
       headers,
+      xsrfCookieNameCookie: `XSRF-TOKEN=${csrfToken}`,
       data: isJSON && body ? JSON.stringify(body) : body,
     });
 

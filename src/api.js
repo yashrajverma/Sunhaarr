@@ -6,6 +6,26 @@ const Api = {
     return sendRequest({ url: API_URL.user });
   },
 
+  logout() {
+    return sendRequest({ url: API_URL.logout, method: "POST" });
+  },
+
+  registerUser(payload) {
+    return sendRequest({
+      method: "POST",
+      url: `${API_URL.user}`,
+      body: payload,
+    });
+  },
+
+  loginUser(payload) {
+    return sendRequest({
+      method: "POST",
+      url: `${API_URL.login}`,
+      body: payload,
+    });
+  },
+
   getProducts({ productId, category }) {
     if (category) {
       return sendRequest({
@@ -19,11 +39,33 @@ const Api = {
     return sendRequest({ url: `${API_URL.products}` });
   },
 
-  addCartItem({ productId, sessionId, quantity, cartId }) {
+  addCartItem({ productId, quantity }) {
     return sendRequest({
       method: "POST",
       url: `${API_URL.cart}${API_URL.cartItem}/${productId}`,
       body: { quantity },
+    });
+  },
+
+  deleteCartItem({ productId }) {
+    return sendRequest({
+      method: "DELETE",
+      url: `${API_URL.cart}${API_URL.cartItem}/${productId}`,
+      body: {},
+    });
+  },
+
+  getCartItem() {
+    return sendRequest({
+      url: `${API_URL.cart}`,
+    });
+  },
+
+  addAddress({ payload }) {
+    return sendRequest({
+      method: "POST",
+      url: `${API_URL.address}`,
+      body: payload,
     });
   },
 };
