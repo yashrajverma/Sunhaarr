@@ -26,17 +26,22 @@ const Api = {
     });
   },
 
-  getProducts({ productId, category }) {
-    if (category) {
-      return sendRequest({
-        url: `${API_URL.products}/category/${category}`,
-      });
-    } else if (productId) {
+  getProducts({ category, pageSize, page, productId }) {
+    if (productId) {
       return sendRequest({
         url: `${API_URL.products}/${productId}`,
       });
     }
-    return sendRequest({ url: `${API_URL.products}` });
+
+    if (category) {
+      return sendRequest({
+        url: `${API_URL.products}/category/${category}?pageSize=${pageSize}&page=${page}`,
+      });
+    }
+
+    return sendRequest({
+      url: `${API_URL.products}?pageSize=${pageSize}&page=${page}`,
+    });
   },
 
   addCartItem({ productId, quantity }) {

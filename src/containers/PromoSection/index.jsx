@@ -6,6 +6,7 @@ import image7 from '../../assets/images/image7.svg';
 import image8 from '../../assets/images/image8.svg';
 import image9 from '../../assets/images/image9.svg';
 import image10 from '../../assets/images/image10.svg';
+import { Link } from 'react-router-dom';
 
 export default function PromoSection() {
     return (
@@ -20,9 +21,12 @@ export default function PromoSection() {
                             This year, our new summer collection will shelter you from the harsh elements of a world that doesn't care
                             if you live or die.
                         </p>
-                        <Button className={'mt-5'}>
-                            Shop Collection
-                        </Button>
+                        <Link to='/products'>
+                            <Button className={'mt-5'}>
+                                Shop Collection
+                            </Button>
+                        </Link>
+
                     </div>
                     <div>
                         <div className="mt-10">

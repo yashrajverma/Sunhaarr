@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import NavbarItemsList from "./navbarItemsList";
 import Icon from "../Icon";
 import { Link } from "react-router-dom";
@@ -9,7 +9,7 @@ import { BrandName } from "../../constants";
 const Navbar = ({ cartItems, user }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const navbarItems = [
+  const navbarItems =useMemo(()=> [
     { type: 'link', label: 'Earrings', href: '/products?category=earring' },
     { type: 'link', label: 'Maang Tikka', href: '/products?category=tikka' },
     {
@@ -42,7 +42,7 @@ const Navbar = ({ cartItems, user }) => {
       ]
     },
     { type: 'link', label: 'Best Sellers', href: '/products?category=best_sellers' }
-  ];
+  ],[]);
 
   return (
     <div className="w-full bg-softPeach h-max py-3 border-b border-gray-600">

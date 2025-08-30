@@ -22,8 +22,6 @@ function App({ user, userData }) {
   const routesItems = [
     { path: '/cart', element: <Cart /> },
     { path: '/wishlist', element: <Wishlist /> },
-    { path: '/privacy-policy', element: <PrivacyPolicy /> },
-    { path: '/jewel-care', element: <JewelCare /> },
     { path: '/account', element: <Account /> },
   ];
 
@@ -51,7 +49,9 @@ function App({ user, userData }) {
         <Route path='/register' element={<Register />} />
         <Route path='/' element={<Home />} />
         <Route path='*' element={<NotFound404 />} />
-        <Route path='/products' element={<ProductCategories />} />
+        <Route path='/products/:category?' element={<ProductCategories />} />
+        <Route path='/jewel-care' element={<JewelCare />} />
+        <Route path='/privacy-policy' element={<PrivacyPolicy />} />
         <Route path='/product/:id' element={<ProductPage />} />
 
       </Routes>

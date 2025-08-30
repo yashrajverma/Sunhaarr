@@ -25,7 +25,7 @@ const ProductCard2 = ({ image, text, link, category, price, description, in_stoc
             <div className="border border-b-0 border-l-0 border-r-0 border-gray-800 text-center ">
                 <p className='text-gray-900 font-bold text-lg'>{text}</p>
                 <p className='text-sm font-normal text-gray-700'>{category.split("_").join(" ").toUpperCase()}</p>
-                <p className='text-blue-800 font-bold'>₹ {price}</p>
+                <p className='text-primaryNavy font-bold'>₹ {price}</p>
             </div>
         </Link>
     );

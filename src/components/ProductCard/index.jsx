@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 
-const ProductCard = ({ image, text, link, even }) => {
+const ProductCard = ({ image, text, link, even, className }) => {
     return (
-        <Link to={link} className="relative w-96 md:w-64 h-96 overflow-hidden shadow-lg cursor-pointer">
+        <Link to={link} className={`relative w-96 md:w-64 h-96 overflow-hidden shadow-lg cursor-pointer ${className}`}>
             <img
                 src={image}
                 alt={text}

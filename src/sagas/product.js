@@ -4,8 +4,13 @@ import Api from "../api";
 export function* getProductsSaga({ payload }) {
   try {
     yield put(getProducts.request());
-    const category = payload;
-    const { products } = yield call(Api.getProducts, category);
+    const { category, pageSize, page } = payload;
+
+    const { products } = yield call(Api.getProducts, {
+      category,
+      pageSize,
+      page,
+    });
     yield put(getProducts.success({ products }));
   } catch (err) {
     console.log(err);

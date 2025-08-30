@@ -1,75 +1,90 @@
-
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, lazy, memo, Suspense, useEffect, useMemo, useState, useTransition } from 'react'
 import { Disclosure } from '@headlessui/react'
 import PropTypes from 'prop-types';
-import Icon from '../../components/Icon'
-import Modal from '../../components/Modal'
 import { categories } from '../../constants'
 import formatSearchQuery from '../../utils/getTitle'
 import { useSearchParams } from 'react-router-dom'
 import Pagination from '../../components/Pagination'
-import ProductCard2 from '../../components/ProductCard2';
 import { connect } from 'react-redux'
-import { getProducts } from '../../routines'
-import SkeletonCard from '../../components/SkeletonCard'
+import { getProducts } from '../../routines';
+import Icon from '../../components/Icon'
+import SkeletonCard from '../../components/Skeleton';
 
-const filters = [
-    {
-        id: 'category',
-        name: 'Category',
-        options: categories.filter(item => { return item.type === 'category' }),
-    },
-    {
-        id: 'metal',
-        name: 'Metal',
-        options: categories.filter(item => { return item.type === 'metal' })
-    },
-    {
-        id: 'purity',
-        name: 'Gold Purity',
-        options: categories.filter(item => { return item.type === 'purity' })
-    },
-    {
-        id: 'occasions',
-        name: 'Occasions',
-        options: categories.filter(item => { return item.type === 'occasions' })
-    },
-]
+const Modal = lazy(() => import('../../components/Modal'))
+const ProductCard2 = lazy(() => import('../../components/ProductCard2'))
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-function ProductCategories({ getProducts, products }) {
-
+function ProductCategories({ getProducts, products, pagination }) {
+    const [isPending, startTransition] = useTransition();
+    const filters = useMemo(() => [
+        {
+            id: 'category',
+            name: 'Category',
+            options: categories.filter(item => { return item.type === 'category' }),
+        },
+        {
+            id: 'metal',
+            name: 'Metal',
+            options: categories.filter(item => { return item.type === 'metal' })
+        },
+        {
+            id: 'purity',
+            name: 'Gold Purity',
+            options: categories.filter(item => { return item.type === 'purity' })
+        },
+        {
+            id: 'occasions',
+            name: 'Occasions',
+            options: categories.filter(item => { return item.type === 'occasions' })
+        },
+    ], [])
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
     const [search, setSearch] = useSearchParams();
 
+    const [itemsPerPage, setItemsPerPage] = useState(pagination.pageSize || 10);
+    const [currentPage, setCurrentPage] = useState(pagination.currentPage || 1);
+
     const category = search.get('category');
     useEffect(() => {
-        getProducts({ category })
+        getProducts({ category: category || "", pageSize: itemsPerPage, page: currentPage })
 
         return () => {
         }
-    }, [category])
+    }, [category, currentPage, itemsPerPage]);
+
+    useEffect(() => {
+        getProducts({ category, pageSize: itemsPerPage, page: currentPage })
+        return () => {
+        }
+    }, []);
 
     const [selectedFilters, setSelectedFilters] = useState({});
+    const handleResetFilter = () => {
+        startTransition(() => {
+            setSelectedFilters({});
+        });
+    }
 
     const handleFilterChange = (sectionId, value) => {
-        // Update selected filters
-        const updatedFilters = { ...selectedFilters, [sectionId]: value };
-        setSelectedFilters(updatedFilters);
+        startTransition(() => {
+            // Update selected filters
+            const updatedFilters = { ...selectedFilters, [sectionId]: value };
+            setSelectedFilters(updatedFilters);
+        });
     };
 
     useEffect(() => {
         setSearch(selectedFilters)
     }, [selectedFilters]);
 
-    const [itemsPerPage, setItemsPerPage] = useState(10)
+
 
     return (
         <>
-            {products.length == 0 ?
+            {products.length === 0 || isPending ?
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <SkeletonCard />
                     <SkeletonCard />
@@ -79,53 +94,58 @@ function ProductCategories({ getProducts, products }) {
                 : <div className="bg-white">
                     <div>
                         {/* Mobile filter dialog */}
-                        <Modal show={mobileFiltersOpen} as={Fragment} setShow={setMobileFiltersOpen}>
-                            {/* Filters */}
-                            <form className="mt-4">
-                                {filters.map((section) => (
-                                    <Disclosure as="div" key={section.name} className="border-t border-gray-200 pt-4 pb-4">
-                                        {({ open }) => (
-                                            <fieldset>
-                                                <legend className="w-full px-2">
-                                                    <Disclosure.Button className="w-full p-2 flex items-center justify-between text-gray-400 hover:text-gray-500">
-                                                        <span className="text-sm font-medium text-gray-900">{section.name}</span>
-                                                        <span className="ml-6 h-7 flex items-center">
-                                                            <Icon
-                                                                iconName='chevrondown'
-                                                                className={classNames(open ? '-rotate-180' : 'rotate-0', 'h-5 w-5 transform')}
-                                                                aria-hidden="true"
-                                                            />
-                                                        </span>
-                                                    </Disclosure.Button>
-                                                </legend>
-                                                <Disclosure.Panel className="pt-4 pb-2 px-4">
-                                                    <div className="space-y-6">
-                                                        {section.options.map((option, optionIdx) => (
-                                                            <div key={option.value} className="flex items-center">
-                                                                <input
-                                                                    id={`${section.id}-${optionIdx}-mobile`}
-                                                                    name={`${section.id}[]`}
-                                                                    defaultValue={option.value}
-                                                                    type="radio"
-                                                                    onChange={() => handleFilterChange(section.id, option.value)}
-                                                                    className="h-4 w-4 border-gray-300 rounded text-primaryNavy focus:ring-primaryNavy"
+                        <Suspense fallback={
+                            <div className='h-screen w-screen flex justify-center items-center'>
+                                <Icon iconName='loading' className='animate-spin' />
+                            </div>}>
+                            <Modal show={mobileFiltersOpen} as={Fragment} setShow={setMobileFiltersOpen}>
+                                {/* Filters */}
+                                <form className="mt-4">
+                                    {filters.map((section) => (
+                                        <Disclosure as="div" key={section.name} className="border-t border-gray-200 pt-4 pb-4">
+                                            {({ open }) => (
+                                                <fieldset>
+                                                    <legend className="w-full px-2">
+                                                        <Disclosure.Button className="w-full p-2 flex items-center justify-between text-gray-400 hover:text-gray-500">
+                                                            <span className="text-sm font-medium text-gray-900">{section.name}</span>
+                                                            <span className="ml-6 h-7 flex items-center">
+                                                                <Icon
+                                                                    iconName='chevrondown'
+                                                                    className={classNames(open ? '-rotate-180' : 'rotate-0', 'h-5 w-5 transform')}
+                                                                    aria-hidden="true"
                                                                 />
-                                                                <label
-                                                                    htmlFor={`${section.id}-${optionIdx}-mobile`}
-                                                                    className="ml-3 text-sm text-gray-500"
-                                                                >
-                                                                    {option.label}
-                                                                </label>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                </Disclosure.Panel>
-                                            </fieldset>
-                                        )}
-                                    </Disclosure>
-                                ))}
-                            </form>
-                        </Modal>
+                                                            </span>
+                                                        </Disclosure.Button>
+                                                    </legend>
+                                                    <Disclosure.Panel className="pt-4 pb-2 px-4">
+                                                        <div className="space-y-6">
+                                                            {section.options.map((option, optionIdx) => (
+                                                                <div key={option.value} className="flex items-center">
+                                                                    <input
+                                                                        id={`${section.id}-${optionIdx}-mobile`}
+                                                                        name={`${section.id}[]`}
+                                                                        defaultValue={option.value}
+                                                                        type="radio"
+                                                                        onChange={() => handleFilterChange(section.id, option.value)}
+                                                                        className="h-4 w-4 border-gray-300 rounded text-primaryNavy focus:ring-primaryNavy"
+                                                                    />
+                                                                    <label
+                                                                        htmlFor={`${section.id}-${optionIdx}-mobile`}
+                                                                        className="ml-3 text-sm text-gray-500"
+                                                                    >
+                                                                        {option.label}
+                                                                    </label>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </Disclosure.Panel>
+                                                </fieldset>
+                                            )}
+                                        </Disclosure>
+                                    ))}
+                                </form>
+                            </Modal>
+                        </Suspense>
 
                         <main className="max-w-2xl mx-auto py-4 px-4 sm:py-10 sm:px-6 lg:max-w-[100%] lg:px-10">
                             <div className="border-b border-gray-200 pb-10 flex justify-between items-center flex-wrap md:flex-nowrap">
@@ -137,14 +157,14 @@ function ProductCategories({ getProducts, products }) {
                                     </p>
                                 </div>
                                 <div>
-                                    <button className='bg-primaryNavy text-white p-3 my-3 md:my-0' onClick={() => { setSelectedFilters({}) }}>Remove Filters</button>
+                                    <button className='bg-primaryNavy text-white p-3 my-3 md:my-0' onClick={handleResetFilter}>Remove Filters</button>
                                     <select onChange={(e) => {
                                         setItemsPerPage(e.target.value)
                                     }} className=' ml-2 py-3 bg-white border-2 border-primaryNavy focus-visible:border-softPeach'>
-                                        <option value='10' selected className='bg-white border-2 border-primaryNavy focus-visible:border-softPeach'>Items Per Page</option>
-                                        <option value='50' >10-50</option>
-                                        <option value='70'>50-70</option>
-                                        <option value='100'>70-100</option>
+                                        <option value="10" selected className='bg-white border-2 border-primaryNavy focus-visible:border-softPeach'>Items Per Page</option>
+                                        <option value="5" >10-50</option>
+                                        <option value="70">50-70</option>
+                                        <option value="100">70-100</option>
 
                                     </select>
                                 </div>
@@ -197,21 +217,27 @@ function ProductCategories({ getProducts, products }) {
                                 <div className="mt-6 mb-4 lg:mt-0 lg:col-span-2 xl:col-span-3">
                                     <div className="h-auto lg:h-full">
                                         <div className="flex flex-col sm:flex-row sm:flex-wrap justify-start gap-2">
+
                                             {products.map(({ id, name, category, link, images, price, description, in_stock }, index) => (
-                                                <ProductCard2
-                                                    key={id}
-                                                    text={name}
-                                                    category={category}
-                                                    link={`/product/${id}`}
-                                                    price={price}
-                                                    image={images}
-                                                    description={description}
-                                                    in_stock={in_stock}
-                                                />
+                                                <Suspense fallback={
+                                                    <div className='h-screen w-screen flex justify-center items-center'>
+                                                        <Icon iconName='loading' className='animate-spin' />
+                                                    </div>}>
+                                                    <ProductCard2
+                                                        key={id}
+                                                        text={name}
+                                                        category={category}
+                                                        link={`/product/${id}`}
+                                                        price={price}
+                                                        image={images}
+                                                        description={description}
+                                                        in_stock={in_stock}
+                                                    />
+                                                </Suspense>
                                             ))}
                                         </div>
                                     </div>
-                                    <Pagination items={products} itemsPerPage={itemsPerPage} />
+                                    <Pagination items={products} itemsPerPage={itemsPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage} allPages={pagination.totalPages} />
                                 </div>
                             </div>
                         </main>
@@ -225,6 +251,7 @@ function ProductCategories({ getProducts, products }) {
 ProductCategories.propTypes = {
     getProducts: PropTypes.func,
     products: PropTypes.array,
+    pagination: PropTypes.object
 };
 
 // Default props
@@ -233,13 +260,13 @@ ProductCategories.defaultProps = {
     getProducts: () => { },
 };
 
-const mapStateToProps = ({ products }) => {
-
-    return products
+const mapStateToProps = (state) => {
+    const { products, pagination } = state.products
+    return { products, pagination }
 }
 
 const mapDispatchToProps = {
     getProducts
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductCategories)
+export default connect(mapStateToProps, mapDispatchToProps)(memo(ProductCategories))

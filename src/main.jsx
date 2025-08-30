@@ -11,7 +11,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { composeWithDevTools } from '@redux-devtools/extension';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistReducer, persistStore } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'
+import storage from 'redux-persist/lib/storage';
+import { ReactNotifications } from 'react-notifications-component'
+import 'react-notifications-component/dist/theme.css'
 
 const sagaMiddleWare = createSagaMiddleware()
 
@@ -38,6 +40,7 @@ createRoot(document.getElementById('root')).render(
     <PersistGate loading={null} persistor={persistor}>
       <StrictMode>
         <BrowserRouter>
+          <ReactNotifications />
           <App />
         </BrowserRouter>
       </StrictMode>

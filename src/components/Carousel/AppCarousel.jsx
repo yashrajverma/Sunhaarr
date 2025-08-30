@@ -2,11 +2,14 @@ import { useEffect, useState } from "react";
 import { AppImage } from "./AppImage";
 import { AppCarouselIndexer } from "./AppCarouselIndexer";
 import { AppCarouselButton } from "./AppCarouselButton";
+import { AppCarouselPlayButton } from "./AppCarouselPlayButton";
 
 export const AppCarousel = ({ images }) => {
   const [selected, setSelected] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
 
   useEffect(() => {
+    if (!isPlaying) return;
 
     const timeout = setTimeout(() => {
       if (selected >= images.length - 1) {
@@ -16,9 +19,12 @@ export const AppCarousel = ({ images }) => {
       }
     }, 1500);
 
-
     return () => clearTimeout(timeout);
-  }, [selected, images.length]);
+  }, [selected, images.length, isPlaying]);
+
+  const togglePlayPause = () => {
+    setIsPlaying(!isPlaying);
+  };
 
   return (
     <div className="w-full h-[70vh] relative overflow-hidden">
@@ -43,6 +49,7 @@ export const AppCarousel = ({ images }) => {
           onClick={() => setSelected(selected + 1)}
         />
       )}
+      <AppCarouselPlayButton isPlaying={isPlaying} onClick={togglePlayPause} />
     </div>
   );
 };

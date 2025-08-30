@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import Icon from "../Icon";
 
-export default function Pagination({ items, itemsPerPage = 10 }) {
-    const totalPages = Math.ceil(items.length / itemsPerPage);
-    const [currentPage, setCurrentPage] = useState(1);
+export default function Pagination({ items, itemsPerPage = 10, currentPage, setCurrentPage, allPages }) {
+    const totalPages = allPages || Math.ceil(items.length / itemsPerPage);
 
     const handlePageClick = (page) => {
         setCurrentPage(page);
@@ -61,8 +60,8 @@ export default function Pagination({ items, itemsPerPage = 10 }) {
                         key={page}
                         onClick={() => handlePageClick(page)}
                         className={`border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium ${page === currentPage
-                                ? "border-accentGold text-accentGold"
-                                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                            ? "border-accentGold text-accentGold"
+                            : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                             }`}
                         aria-current={page === currentPage ? "page" : undefined}
                     >

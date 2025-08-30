@@ -1,0 +1,67 @@
+# robots.txt for Sunhaarr - Luxury Jewelry E-commerce Website
+# https://sunhaarr.vercel.app
+
+# Allow all well-known bots
+User-agent: Googlebot
+User-agent: Googlebot-Image
+User-agent: Bingbot
+User-agent: YandexBot
+Allow: /
+
+# Social Media Bots
+User-agent: Twitterbot
+User-agent: facebookexternalhit
+Allow: /
+Allow: /src/assets/images/
+
+# General rules for all other bots
+User-agent: *
+Allow: /
+Allow: /src/pages/Home/           # Home page
+Allow: /src/pages/ProductCategories/  # Product listing pages
+Allow: /src/pages/ProductPage/    # Individual product pages
+Allow: /src/pages/JewelCare/     # Jewelry care information
+
+# Important product sections that should be crawled
+Allow: /src/components/Product/
+Allow: /src/components/ProductCard/
+Allow: /src/components/ProductCard2/
+
+# Prevent access to private/sensitive areas
+Disallow: /src/pages/auth/       # Login/Register pages
+Disallow: /src/pages/Account/    # User account pages
+Disallow: /src/pages/Cart/       # Shopping cart
+Disallow: */Dashboard.jsx        # Admin dashboard
+Disallow: */AddressBook.jsx      # User addresses
+Disallow: */PaymentMethod.jsx    # Payment information
+
+# Prevent crawling of application internals
+Disallow: /src/utils/
+Disallow: /src/store/
+Disallow: /src/reducers/
+Disallow: /src/sagas/
+Disallow: /src/api.js
+Disallow: /src/constants.js
+
+# Allow crawling of SEO-important assets
+Allow: /src/assets/images/
+Allow: *.jpg
+Allow: *.svg
+Allow: *.png
+Allow: *.webp
+
+# Performance optimizations
+Crawl-delay: 10                  # Be gentle on server resources
+Request-rate: 1/10               # Maximum 1 request per 10 seconds
+
+# Important metadata files
+Allow: /sitemap.xml
+Allow: /robots.txt
+
+# Sitemaps
+Sitemap: https://sunhaarr.vercel.app/sitemap.xml
+Sitemap: https://sunhaarr.vercel.app/products-sitemap.xml
+Sitemap: https://sunhaarr.vercel.app/categories-sitemap.xml
+
+# Host
+Host: https://sunhaarr.vercel.app
