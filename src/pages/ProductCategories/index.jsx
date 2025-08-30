@@ -1,4 +1,4 @@
-import { Fragment, lazy, memo, Suspense, useEffect, useMemo, useState, useTransition } from 'react'
+import { Fragment, lazy, memo, Suspense, useEffect, useMemo, useState, useTransition, useCallback } from 'react'
 import { Disclosure } from '@headlessui/react'
 import PropTypes from 'prop-types';
 import { categories } from '../../constants'
@@ -43,42 +43,52 @@ function ProductCategories({ getProducts, products, pagination }) {
     ], [])
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
     const [search, setSearch] = useSearchParams();
-
     const [itemsPerPage, setItemsPerPage] = useState(pagination.pageSize || 10);
     const [currentPage, setCurrentPage] = useState(pagination.currentPage || 1);
 
-    const category = search.get('category');
-    useEffect(() => {
-        getProducts({ category: category || "", pageSize: itemsPerPage, page: currentPage })
+    // Memoize the category to prevent unnecessary rerenders
+    const category = useMemo(() => search.get('category'), [search]);
 
-        return () => {
-        }
-    }, [category, currentPage, itemsPerPage]);
+    // Memoize the products fetch params
+    const fetchParams = useMemo(() => ({
+        category: category || "",
+        pageSize: itemsPerPage,
+        page: currentPage
+    }), [category, itemsPerPage, currentPage]);
 
+    // Single source of truth for products fetch
     useEffect(() => {
-        getProducts({ category, pageSize: itemsPerPage, page: currentPage })
-        return () => {
+        if (fetchParams.category !== undefined) {
+            getProducts(fetchParams);
         }
-    }, []);
+        return () => { }
+    }, [fetchParams, getProducts]);
 
     const [selectedFilters, setSelectedFilters] = useState({});
-    const handleResetFilter = () => {
+    const handleResetFilter = useCallback(() => {
         startTransition(() => {
             setSelectedFilters({});
+            setSearch({}); // Clear all search params
+            setCurrentPage(1); // Reset to first page
         });
-    }
+    }, [setSearch]);
 
-    const handleFilterChange = (sectionId, value) => {
+    const handleFilterChange = useCallback((sectionId, value) => {
         startTransition(() => {
             // Update selected filters
             const updatedFilters = { ...selectedFilters, [sectionId]: value };
             setSelectedFilters(updatedFilters);
         });
-    };
-
-    useEffect(() => {
-        setSearch(selectedFilters)
     }, [selectedFilters]);
+
+    // Handle filter changes with proper params preservation
+    useEffect(() => {
+        const currentParams = Object.fromEntries(search.entries());
+        setSearch({
+            ...currentParams,
+            ...selectedFilters
+        });
+    }, [selectedFilters, search, setSearch]);
 
 
 
@@ -147,13 +157,13 @@ function ProductCategories({ getProducts, products, pagination }) {
                             </Modal>
                         </Suspense>
 
-                        <main className="max-w-2xl mx-auto py-4 px-4 sm:py-10 sm:px-6 lg:max-w-[100%] lg:px-10">
-                            <div className="border-b border-gray-200 pb-10 flex justify-between items-center flex-wrap md:flex-nowrap">
+                        <main className="max-w-2xl mx-auto py-4 px-4 sm:py-10 sm:px-6 lg:max-w-[100%] lg:px-10 relative">
+                            <div className="border-b border-gray-200 pb-10 flex justify-between items-center flex-wrap md:flex-nowrap sticky top-0 bg-white z-50">
                                 <div className=''>
 
-                                    <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">{category ? formatSearchQuery(category) : 'Products'}</h1>
+                                    <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">{category ? formatSearchQuery(category) : 'Shop Trendy Jewels'}</h1>
                                     <p className="mt-4 text-base text-gray-500">
-                                        Checkout out the latest release of Basic Tees, new and improved with four openings!
+                                        Checkout out the latest release of all type of Jewellery!
                                     </p>
                                 </div>
                                 <div>
@@ -216,7 +226,7 @@ function ProductCategories({ getProducts, products, pagination }) {
                                 </aside>
                                 <div className="mt-6 mb-4 lg:mt-0 lg:col-span-2 xl:col-span-3">
                                     <div className="h-auto lg:h-full">
-                                        <div className="flex flex-col sm:flex-row sm:flex-wrap justify-start gap-2">
+                                        <div className="flex flex-col sm:flex-row sm:flex-wrap justify-center sm:justify-start gap-2">
 
                                             {products.map(({ id, name, category, link, images, price, description, in_stock }, index) => (
                                                 <Suspense fallback={
