@@ -14,6 +14,7 @@ import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { ReactNotifications } from 'react-notifications-component'
 import 'react-notifications-component/dist/theme.css'
+// import { SpeedInsights } from "@vercel/speed-insights"
 
 const sagaMiddleWare = createSagaMiddleware()
 
@@ -37,6 +38,7 @@ let persistor = persistStore(store, {});
 
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
+    {/* {process.env.NODE_ENV !== 'development' && <SpeedInsights />} */}
     <PersistGate loading={null} persistor={persistor}>
       <StrictMode>
         <BrowserRouter>

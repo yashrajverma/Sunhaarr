@@ -17,7 +17,6 @@ import { useEffect } from "react";
 import { user } from "./routines"
 import Account from "./pages/Account"
 import Authenticated from "./layout/Authenticated"
-import { SpeedInsights } from "@vercel/speed-insights/next"
 
 function App({ user, userData }) {
   const routesItems = [
@@ -38,7 +37,6 @@ function App({ user, userData }) {
 
   return (
     <>
-      {process.env.NODE_ENV !== 'development' && <SpeedInsights />}
       <Navbar />
       <Routes>
         <Route element={<Authenticated />}>
