@@ -18,6 +18,20 @@ export const getCartItem = createRoutine("GET_CART_ITEM");
 
 export const deleteCartItem = createRoutine("DELETE_CART_ITEM");
 
+export const updateCartItem = createRoutine("UPDATE_CART_ITEM");
+
 export const addAddress = createRoutine("ADD_ADDRESS");
 
 export const getAddress = createRoutine("GET_ADDRESS");
+
+export const updateAddress = createRoutine("UPDATE_ADDRESS");
+
+export const deleteAddress = createRoutine("DELETE_ADDRESS");
+
+export const getSearch = createRoutine("GET_SEARCH");
+
+export const addProduct = createRoutine("ADD_PRODUCT");
+
+export const updateProduct = createRoutine("UPDATE_PRODUCT");
+
+export const deleteProduct = createRoutine("DELETE_PRODUCT");

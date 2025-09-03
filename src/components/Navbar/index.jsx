@@ -1,15 +1,20 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, lazy, Suspense } from "react";
 import NavbarItemsList from "./navbarItemsList";
 import Icon from "../Icon";
 import { Link } from "react-router-dom";
 import { connect, useSelector } from "react-redux";
 import checkTokenExpired from "../../utils/checkTokenExpired";
 import { BrandName } from "../../constants";
+import { getSearch } from "../../routines";
+import debounce from "../../utils/debounce";
 
-const Navbar = ({ cartItems, user }) => {
+const Modal = lazy(() => import("../Modal"));
+
+const Navbar = ({ cartItems, user, getSearch, search }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setShowSearch] = useState(false);
 
-  const navbarItems =useMemo(()=> [
+  const navbarItems = useMemo(() => [
     { type: 'link', label: 'Earrings', href: '/products?category=earring' },
     { type: 'link', label: 'Maang Tikka', href: '/products?category=tikka' },
     {
@@ -42,13 +47,23 @@ const Navbar = ({ cartItems, user }) => {
       ]
     },
     { type: 'link', label: 'Best Sellers', href: '/products?category=best_sellers' }
-  ],[]);
+  ], []);
+
+  const handleSearch = (e) => {
+    try {
+      const { value } = e.target;
+      debounce(getSearch({ query: value }), 3000)
+    }
+    catch (err) {
+      console.error(err);
+    }
+  }
 
   return (
     <div className="w-full bg-softPeach h-max py-3 border-b border-gray-600">
       <div className="block text-center mb-3 md:hidden">
         <Link to="/">
-          <h1 className="text-accentGold text-2xl font-bold stroke-primaryNavy stroke-2 ">{BrandName}.com</h1>
+          <h1 className="text-primaryNavy text-2xl font-bold stroke-2 ">{BrandName}</h1>
         </Link>
       </div>
       <div className="flex justify-between px-6 md:px-16 items-center">
@@ -58,14 +73,14 @@ const Navbar = ({ cartItems, user }) => {
           <input
             placeholder="What are you looking for?"
             className="rounded-md text-sm bg-transparent w-full md:w-auto border-none outline-none p-2 focus:border-none focus:outline-none focus:ring-0"
+            onClick={() => { setShowSearch(true) }}
           />
-
         </div>
 
         {/* Center: Logo */}
         <div className="hidden md:block">
           <Link to="/">
-            <h1 className="text-accentGold text-2xl font-bold stroke-primaryNavy stroke-2 ">{BrandName}.com</h1>
+            <h1 className="animate-text bg-gradient-to-r from-primaryNavy via-accentGold to-yellow-700 bg-clip-text text-transparent font-black text-3xl font-extrabold ">{BrandName}</h1>
           </Link>
         </div>
 
@@ -76,9 +91,9 @@ const Navbar = ({ cartItems, user }) => {
             <Link to={checkTokenExpired(user.expires) ? '/account' : '/login'}>
               <Icon iconName="user" color="text-primaryNavy" />
             </Link>
-            <Link to='/wishlist'>
-              <Icon iconName="heart" color="text-primaryNavy" />
-            </Link>
+            {/* <Link to='/wishlist'>
+              <Icon iconName="heart" color="text-primaryNavy" hasBadge badgeText={cartItems} />
+            </Link> */}
             <Link to="/cart">
               <Icon iconName="shoppingbag" color="text-primaryNavy" hasBadge badgeText={cartItems} />
             </Link>
@@ -118,6 +133,25 @@ const Navbar = ({ cartItems, user }) => {
           </div>
         </div>
       )}
+      <Suspense fallback={<div>Loading...</div>}>
+        <Modal show={isSearchOpen} setShow={setShowSearch} className={'h-20rem overflow-auto w-[50vw]'}>
+          <input
+            placeholder="What are you looking for?"
+            className="rounded-md text-sm bg-transparent w-[70%] focus-within:border-primaryNavy md:w-auto border-none outline-none p-2 focus:border-none focus:outline-none focus:ring-0"
+            onChange={handleSearch}
+            onClick={() => { setShowSearch(true) }}
+          />
+          {search &&
+            (<div className="overflow-y-auto mt-5 border-primaryNavy border">
+              {search.map(item => (
+                <Link key={item.id} to={`/product/${item.id}`} className="block p-2 hover:bg-primaryNavy hover:text-white" onClick={() => setShowSearch(false)}>
+                  {item.name}
+                </Link>
+              ))}
+            </div>)}
+        </Modal>
+      </Suspense>
+
     </div>
   );
 };
@@ -127,8 +161,12 @@ Navbar.defaultProps = {
   cartItems: 0
 }
 
-const mapStateToProps = ({ user }) => {
+const mapStateToProps = ({ user, search }) => {
   const cartLength = user.cartItems != null ? user.cartItems.length : 0
-  return { cartItems: cartLength, user }
+  return { cartItems: cartLength, user, search }
 }
-export default connect(mapStateToProps, null)(Navbar);
+
+const mapDispatchToProps = {
+  getSearch
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

@@ -4,7 +4,7 @@ import { AppCarouselIndexer } from "./AppCarouselIndexer";
 import { AppCarouselButton } from "./AppCarouselButton";
 import { AppCarouselPlayButton } from "./AppCarouselPlayButton";
 
-export const AppCarousel = ({ images }) => {
+export const AppCarousel = ({ images, className }) => {
   const [selected, setSelected] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
 
@@ -27,7 +27,7 @@ export const AppCarousel = ({ images }) => {
   };
 
   return (
-    <div className="w-full h-[70vh] relative overflow-hidden">
+    <div className={`w-full h-[70vh] relative overflow-hidden ${className}`}>
       {images.map((image, i) => (
         <AppImage
           key={`image-${i}`}

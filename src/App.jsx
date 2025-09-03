@@ -17,6 +17,7 @@ import { useEffect } from "react";
 import { user } from "./routines"
 import Account from "./pages/Account"
 import Authenticated from "./layout/Authenticated"
+import AdminLayout from "./pages/admin"
 
 function App({ user, userData }) {
   const routesItems = [
@@ -26,14 +27,6 @@ function App({ user, userData }) {
   ];
 
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    (async function get() {
-      const { csrfToken } = await sendRequest({ url: '/register' });
-      localStorage.setItem("csrfToken", csrfToken);
-
-    })()
-  }, [])
 
   return (
     <>
@@ -47,6 +40,7 @@ function App({ user, userData }) {
 
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/admin/*' element={<AdminLayout user={userData} />} />
         <Route path='/' element={<Home />} />
         <Route path='*' element={<NotFound404 />} />
         <Route path='/products/:category?' element={<ProductCategories />} />

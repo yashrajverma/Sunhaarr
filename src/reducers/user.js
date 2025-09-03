@@ -1,7 +1,6 @@
 import { handleActions } from "redux-actions";
 
 import {
-  addAddress,
   login,
   logoutUser,
   register,
@@ -9,9 +8,10 @@ import {
   addCartItem,
   getCartItem,
   deleteCartItem,
+  updateCartItem,
 } from "../routines";
 
-const defaultState = {};
+const defaultState = { cart: null, cartItems: [] };
 
 const userReducer = handleActions(
   {
@@ -24,6 +24,8 @@ const userReducer = handleActions(
       delete payload.user;
       const userData = { ...data, ...payload };
       localStorage.setItem("token", payload.token);
+      userData.cart !== null &&
+        localStorage.setItem("cart_id", userData.cart.id);
       return userData;
     },
 
@@ -32,6 +34,8 @@ const userReducer = handleActions(
       delete payload.user;
       const userData = { ...data, ...payload };
       localStorage.setItem("token", payload.token);
+      userData.cart !== null &&
+        localStorage.setItem("cart_id", userData.cart.id);
 
       return userData;
     },
@@ -40,27 +44,103 @@ const userReducer = handleActions(
       return {};
     },
 
-    [addAddress.SUCCESS]: (state, { payload }) => {
-      return payload;
-    },
-
     [addCartItem.SUCCESS]: (state, { payload }) => {
       state.cartItems.push(payload.cart.cartItem);
-      return { ...state };
+      // Update cart total and num_items
+      let total = state.cartItems.reduce(
+        (sum, item) => sum + (item.total_price || 0),
+        0
+      );
+      total = Number(total.toFixed(2));
+      let num_items = state.cartItems.reduce(
+        (sum, item) => sum + (item.quantity || 0),
+        0
+      );
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          total,
+          num_items,
+        },
+      };
+    },
+
+    [updateCartItem.SUCCESS]: (state, { payload }) => {
+      const updatedCartItems = state.cartItems.map((item) =>
+        item.product_id === payload.cartItem.product_id
+          ? payload.cartItem
+          : item
+      );
+      // Update cart total and num_items
+      let total = updatedCartItems.reduce(
+        (sum, item) => sum + (item.total_price || 0),
+        0
+      );
+      total = Number(total.toFixed(2));
+      let num_items = updatedCartItems.reduce(
+        (sum, item) => sum + (item.quantity || 0),
+        0
+      );
+      return {
+        ...state,
+        cartItems: updatedCartItems,
+        cart: {
+          ...state.cart,
+          total,
+          num_items,
+        },
+      };
     },
 
     [getCartItem.SUCCESS]: (state, { payload }) => {
-      return { ...state, ...payload };
+      state.cartItems.forEach((element) => {
+        element.quantity = payload[element.product_id] || 0;
+      });
+      // Update cart total and num_items
+      let total = state.cartItems.reduce(
+        (sum, item) => sum + (item.total_price || 0),
+        0
+      );
+      total = Number(total.toFixed(2));
+      let num_items = state.cartItems.reduce(
+        (sum, item) => sum + (item.quantity || 0),
+        0
+      );
+      return {
+        ...state,
+        ...payload,
+        cart: {
+          ...state.cart,
+          total,
+          num_items,
+        },
+      };
     },
 
     [deleteCartItem.SUCCESS]: (state, { payload }) => {
       const updatedCartItems = state.cartItems.filter(
-        (cart) => cart.product_id == payload.product_id
+        (cart) => cart.product_id != payload.product_id
       );
 
+      // Update cart total and num_items
+      let total = updatedCartItems.reduce(
+        (sum, item) => sum + (item.total_price || 0),
+        0
+      );
+      total = Number(total.toFixed(2));
+      let num_items = updatedCartItems.reduce(
+        (sum, item) => sum + (item.quantity || 0),
+        0
+      );
       return {
         ...state,
         cartItems: updatedCartItems,
+        cart: {
+          ...state.cart,
+          total,
+          num_items,
+        },
       };
     },
   },

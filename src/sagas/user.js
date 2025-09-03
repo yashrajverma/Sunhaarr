@@ -1,5 +1,5 @@
 import { call, put, takeLatest } from "redux-saga/effects";
-import { register, user, login, addAddress, logoutUser } from "../routines";
+import { register, user, login, logoutUser } from "../routines";
 import Api from "../api";
 import storage from "redux-persist/lib/storage";
 
@@ -42,24 +42,12 @@ export function* loginUserSaga({ payload }) {
   }
 }
 
-export function* addAddressUserSaga({ payload }) {
-  try {
-    yield put(addAddress.request());
-    const addAddressData = yield call(Api.addAddress, payload);
-    yield put(addAddress.success(addAddressData));
-  } catch (err) {
-    console.log(err);
-    yield put(addAddress.failure(err));
-  } finally {
-    yield put(addAddress.fulfill());
-  }
-}
-
 export function* logoutUserSaga() {
   try {
     yield put(logoutUser.request());
     storage.removeItem("persist:root");
     storage.removeItem("token");
+    storage.removeItem("cart_id");
     // yield call(Api.logout);
     document.cookie = "access_token=";
     yield put(logoutUser.success());
@@ -75,6 +63,5 @@ export function* watchUsers() {
   yield takeLatest(user.TRIGGER, getUserSaga);
   yield takeLatest(register.TRIGGER, registerUserSaga);
   yield takeLatest(login.TRIGGER, loginUserSaga);
-  yield takeLatest(addAddress.TRIGGER, addAddressUserSaga);
   yield takeLatest(logoutUser.TRIGGER, logoutUserSaga);
 }

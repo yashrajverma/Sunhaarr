@@ -1,13 +1,13 @@
 import { connect } from "react-redux"
 import Button from "../../components/Button"
 import Icon from "../../components/Icon"
-import { deleteCartItem, getCartItem } from "../../routines"
-import { useEffect } from "react";
+import { deleteCartItem, getCartItem, updateCartItem } from "../../routines"
+import { useEffect, useState } from "react";
 import emptyCart from '../../assets/images/emptyCart.svg'
 
-function Cart({ getCartItem, products, cart, deleteCartItem }) {
+function Cart({ getCartItem, products, cart, deleteCartItem, updateCartItem }) {
     useEffect(() => {
-        getCartItem()
+        getCartItem();
     }, []);
 
     if (products.length <= 0 && cart) {
@@ -37,13 +37,13 @@ function Cart({ getCartItem, products, cart, deleteCartItem }) {
                             <ul role="list" className="border-t border-b border-gray-200 divide-y divide-gray-200">
                                 {products.map((product, productIdx) => (
                                     <li key={product.id} className="flex py-6 sm:py-10">
-                                        <div className="flex-shrink-0">
+                                        {/* <div className="flex-shrink-0">
                                             <img
                                                 src={product.imageSrc}
                                                 alt={product.imageAlt}
                                                 className="w-24 h-24 rounded-md object-center object-cover sm:w-48 sm:h-48"
                                             />
-                                        </div>
+                                        </div> */}
 
                                         <div className="ml-4 flex-1 flex flex-col justify-between sm:ml-6">
                                             <div className="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
@@ -69,11 +69,11 @@ function Cart({ getCartItem, products, cart, deleteCartItem }) {
                                                         Quantity, {product.quantity}
                                                     </label>
                                                     <div className="relative flex items-center max-w-[8rem]">
-                                                        <button type="button" id="decrement-button" className="   dark:border-primaryNavy hover:bg-gray-200 border border-gray-300 p-2 h-11 ">
+                                                        <button onClick={() => { updateCartItem({ productId: product.product_id, quantity: product.quantity - 1 }) }} type="button" id="decrement-button" className="   dark:border-primaryNavy hover:bg-gray-200 border border-gray-300 p-2 h-11 ">
                                                             <Icon iconName='minus' />
                                                         </button>
-                                                        <input value={product.quantity} onChange={(e) => { setProductQuantity(e.target.value) }} type="text" id="quantity-input" className=" font-semibold bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-primaryNavy text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-primaryNavy dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-                                                        <button type="button" id="increment-button" className="   dark:border-primaryNavy hover:bg-gray-200 border border-gray-300 p-2 h-11 ">
+                                                        <input value={product.quantity} onChange={(e) => { updateCartItem({ productId: product.product_id, quantity: e.target.value }) }} type="text" id="quantity-input" className=" font-semibold bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-primaryNavy text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-primaryNavy dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                                        <button onClick={() => { updateCartItem({ productId: product.product_id, quantity: product.quantity + 1 }) }} type="button" id="increment-button" className="dark:border-primaryNavy hover:bg-gray-200 border border-gray-300 p-2 h-11 ">
                                                             <Icon iconName='plus' />
                                                         </button>
                                                     </div>
@@ -107,7 +107,7 @@ function Cart({ getCartItem, products, cart, deleteCartItem }) {
                             aria-labelledby="summary-heading"
                             className="mt-16 bg-gray-50 rounded-lg px-4 py-6 sm:p-6 lg:p-8 lg:mt-0 lg:col-span-5"
                         >
-                            <h2 id="summary-heading" className="text-lg font-medium text-primaryNavy">
+                            <h2 id="summary-heading" className="text-lg font-bold text-primaryNavy">
                                 Order summary
                             </h2>
 
@@ -121,7 +121,7 @@ function Cart({ getCartItem, products, cart, deleteCartItem }) {
                                         <span>Shipping estimate</span>
                                         <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
                                             <span className="sr-only">Learn more about how shipping is calculated</span>
-                                            <Icon iconName="questionmarkcircle" className="h-5 w-5" aria-hidden="true" />
+                                            <Icon iconName="questionmarkcircle" className="h-3 w-3" aria-hidden="true" />
                                         </a>
                                     </dt>
                                     <dd className="text-sm font-medium text-primaryNavy">Rs. 5.00</dd>
@@ -131,14 +131,14 @@ function Cart({ getCartItem, products, cart, deleteCartItem }) {
                                         <span>Tax estimate</span>
                                         <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
                                             <span className="sr-only">Learn more about how tax is calculated</span>
-                                            <Icon iconName="questionmarkcircle" className="h-5 w-5" aria-hidden="true" />
+                                            <Icon iconName="questionmarkcircle" className="h-3 w-3" aria-hidden="true" />
                                         </a>
                                     </dt>
                                     <dd className="text-sm font-medium text-primaryNavy">Rs. 8.32</dd>
                                 </div>
                                 <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
                                     <dt className="text-base font-medium text-primaryNavy">Order total</dt>
-                                    <dd className="text-base font-medium text-primaryNavy">Rs. {cart.total + 5 + 8.32}</dd>
+                                    <dd className="text-base font-medium text-primaryNavy">Rs. {Math.round(cart.total + 5 + 8.32)}</dd>
                                 </div>
                             </dl>
 
@@ -163,7 +163,8 @@ const mapStateToProps = ({ user }) => {
 }
 const mapDispatchToProps = {
     getCartItem,
-    deleteCartItem
+    deleteCartItem,
+    updateCartItem
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart)

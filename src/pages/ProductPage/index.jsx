@@ -8,7 +8,7 @@ const ProductPage = ({ getSingleProducts, product }) => {
     const location = useLocation().pathname.split('/')[2]
     useEffect(() => {
         getSingleProducts({ productId: location })
-    }, [])
+    }, [location])
     return product && <Product product={product} />
 };
 

@@ -4,6 +4,7 @@ import Button from '../../components/Button'
 import { Link, Navigate } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { login } from '../../routines'
+import getCSRFToken from '../../utils/getCSRFToken'
 
 const Login = ({ user, loginUser }) => {
     const [loginData, setLoginData] = useState({
@@ -15,13 +16,18 @@ const Login = ({ user, loginUser }) => {
         setLoginData({ ...loginData, [name]: value })
     };
     const handleLogin = () => {
+        // getCSRFToken()
         loginUser(loginData)
     }
 
     if (user && user.token) {
-
+        // Redirect admin users to admin dashboard
+        if (user.is_admin) {
+            return <Navigate to={'/admin'} />
+        }
         return <Navigate to={'/'} />
     }
+
     return (
         <div className="py-16">
             <div className="flex bg-softPeach shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">

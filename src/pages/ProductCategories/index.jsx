@@ -235,6 +235,7 @@ function ProductCategories({ getProducts, products, pagination }) {
                                                     </div>}>
                                                     <ProductCard2
                                                         key={id}
+                                                        id={id}
                                                         text={name}
                                                         category={category}
                                                         link={`/product/${id}`}

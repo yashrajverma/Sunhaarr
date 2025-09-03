@@ -124,10 +124,10 @@ export default function Footer() {
                             <Text variant="sm" className="text-left mb-5 font-normal text-gray-500">Contact:
                                 <ul >
                                     <li>
-                                        <Text variant="sm" className="text-left font-normal text-gray-700">+91 7000042139</Text>
+                                        <a href="tel:+917000042139" className="text-left font-normal text-gray-700">+91 7000042139</a>
                                     </li>
                                     <li>
-                                        <Text variant="sm" className="text-left font-normal text-gray-700">+91 8839080272</Text>
+                                        <a href="tel:+918839080272" className="text-left font-normal text-gray-700">+91 8839080272</a>
                                     </li>
                                 </ul>
                             </Text>

@@ -8,229 +8,8 @@ import { connect } from 'react-redux'
 import { addCartItem } from '../../routines'
 import extractArraysFromText from '../../utils/textToArray'
 import { Navigate } from 'react-router-dom'
-
-const navigation = {
-    categories: [
-        {
-            id: 'women',
-            name: 'Women',
-            featured: [
-                {
-                    name: 'New Arrivals',
-                    href: '#',
-                    imageSrc: 'https://tailwindui.com/img/ecommerce-images/mega-menu-category-01.jpg',
-                    imageAlt: 'Models sitting back to back, wearing Basic Tee in black and bone.',
-                },
-                {
-                    name: 'Basic Tees',
-                    href: '#',
-                    imageSrc: 'https://tailwindui.com/img/ecommerce-images/mega-menu-category-02.jpg',
-                    imageAlt: 'Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.',
-                },
-                {
-                    name: 'Accessories',
-                    href: '#',
-                    imageSrc: 'https://tailwindui.com/img/ecommerce-images/mega-menu-category-03.jpg',
-                    imageAlt: 'Model wearing minimalist watch with black wristband and white watch face.',
-                },
-            ],
-            sections: [
-                [
-                    {
-                        id: 'shoes',
-                        name: 'Shoes & Accessories',
-                        items: [
-                            { name: 'Sneakers', href: '#' },
-                            { name: 'Boots', href: '#' },
-                            { name: 'Flats', href: '#' },
-                            { name: 'Sandals', href: '#' },
-                            { name: 'Heels', href: '#' },
-                            { name: 'Socks', href: '#' },
-                        ],
-                    },
-                    {
-                        id: 'collection',
-                        name: 'Shop Collection',
-                        items: [
-                            { name: 'Everything', href: '#' },
-                            { name: 'Core', href: '#' },
-                            { name: 'New Arrivals', href: '#' },
-                            { name: 'Sale', href: '#' },
-                            { name: 'Accessories', href: '#' },
-                        ],
-                    },
-                ],
-                [
-                    {
-                        id: 'clothing',
-                        name: 'All Clothing',
-                        items: [
-                            { name: 'Basic Tees', href: '#' },
-                            { name: 'Artwork Tees', href: '#' },
-                            { name: 'Tops', href: '#' },
-                            { name: 'Bottoms', href: '#' },
-                            { name: 'Swimwear', href: '#' },
-                            { name: 'Underwear', href: '#' },
-                        ],
-                    },
-                    {
-                        id: 'accessories',
-                        name: 'All Accessories',
-                        items: [
-                            { name: 'Watches', href: '#' },
-                            { name: 'Wallets', href: '#' },
-                            { name: 'Bags', href: '#' },
-                            { name: 'Sunglasses', href: '#' },
-                            { name: 'Hats', href: '#' },
-                            { name: 'Belts', href: '#' },
-                        ],
-                    },
-                ],
-                [
-                    {
-                        id: 'brands',
-                        name: 'Brands',
-                        items: [
-                            { name: 'Full Nelson', href: '#' },
-                            { name: 'My Way', href: '#' },
-                            { name: 'Re-Arranged', href: '#' },
-                            { name: 'Counterfeit', href: '#' },
-                            { name: 'Significant Other', href: '#' },
-                        ],
-                    },
-                ],
-            ],
-        },
-        {
-            id: 'men',
-            name: 'Men',
-            featured: [
-                {
-                    name: 'Accessories',
-                    href: '#',
-                    imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-03-category-01.jpg',
-                    imageAlt:
-                        'Wooden shelf with gray and olive drab green baseball caps, next to wooden clothes hanger with sweaters.',
-                },
-                {
-                    name: 'New Arrivals',
-                    href: '#',
-                    imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg',
-                    imageAlt: 'Drawstring top with elastic loop closure and textured interior padding.',
-                },
-                {
-                    name: 'Artwork Tees',
-                    href: '#',
-                    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-06.jpg',
-                    imageAlt:
-                        'Three shirts in gray, white, and blue arranged on table with same line drawing of hands and shapes overlapping on front of shirt.',
-                },
-            ],
-            sections: [
-                [
-                    {
-                        id: 'shoes',
-                        name: 'Shoes & Accessories',
-                        items: [
-                            { name: 'Sneakers', href: '#' },
-                            { name: 'Boots', href: '#' },
-                            { name: 'Sandals', href: '#' },
-                            { name: 'Socks', href: '#' },
-                        ],
-                    },
-                    {
-                        id: 'collection',
-                        name: 'Shop Collection',
-                        items: [
-                            { name: 'Everything', href: '#' },
-                            { name: 'Core', href: '#' },
-                            { name: 'New Arrivals', href: '#' },
-                            { name: 'Sale', href: '#' },
-                        ],
-                    },
-                ],
-                [
-                    {
-                        id: 'clothing',
-                        name: 'All Clothing',
-                        items: [
-                            { name: 'Basic Tees', href: '#' },
-                            { name: 'Artwork Tees', href: '#' },
-                            { name: 'Pants', href: '#' },
-                            { name: 'Hoodies', href: '#' },
-                            { name: 'Swimsuits', href: '#' },
-                        ],
-                    },
-                    {
-                        id: 'accessories',
-                        name: 'All Accessories',
-                        items: [
-                            { name: 'Watches', href: '#' },
-                            { name: 'Wallets', href: '#' },
-                            { name: 'Bags', href: '#' },
-                            { name: 'Sunglasses', href: '#' },
-                            { name: 'Hats', href: '#' },
-                            { name: 'Belts', href: '#' },
-                        ],
-                    },
-                ],
-                [
-                    {
-                        id: 'brands',
-                        name: 'Brands',
-                        items: [
-                            { name: 'Re-Arranged', href: '#' },
-                            { name: 'Counterfeit', href: '#' },
-                            { name: 'Full Nelson', href: '#' },
-                            { name: 'My Way', href: '#' },
-                        ],
-                    },
-                ],
-            ],
-        },
-    ],
-    pages: [
-        { name: 'Company', href: '#' },
-        { name: 'Stores', href: '#' },
-    ],
-}
-const product = {
-    name: 'Zip Tote Basket',
-    price: '$140',
-    rating: 4,
-    images: [
-        {
-            id: 1,
-            name: 'Angled view',
-            src: 'https://tailwindui.com/img/ecommerce-images/product-page-03-product-01.jpg',
-            alt: 'Angled front view with bag zipped and handles upright.',
-        },
-        // More images...
-    ],
-    colors: [
-        { name: 'Washed Black', bgColor: 'bg-gray-700', selectedColor: 'ring-gray-700' },
-        { name: 'White', bgColor: 'bg-white', selectedColor: 'ring-gray-400' },
-        { name: 'Washed Gray', bgColor: 'bg-gray-500', selectedColor: 'ring-gray-500' },
-    ],
-    description: `
-    <p>The Zip Tote Basket is the perfect midpoint between shopping tote and comfy backpack. With convertible straps, you can hand carry, should sling, or backpack this convenient and spacious bag. The zip top and durable canvas construction keeps your goods protected for all-day use.</p>
-  `,
-    details: [
-        {
-            name: 'Features',
-            items: [
-                'Multiple strap configurations',
-                'Spacious interior with top zip',
-                'Leather handle and tabs',
-                'Interior dividers',
-                'Stainless strap loops',
-                'Double stitched construction',
-                'Water-resistant',
-            ],
-        },
-        // More sections...
-    ],
-}
+import InnerImageZoom from 'react-inner-image-zoom'
+import 'react-inner-image-zoom/lib/styles.min.css'
 const relatedProducts = [
     {
         id: 1,
@@ -283,7 +62,7 @@ function Product({ product, addCartItem, cart }) {
 
 
     const addItemToCart = (productId) => {
-        addCartItem({ productId, quantity: 1 });
+        addCartItem({ productId, quantity: productQuantity, cartId: cart != null ? cart.id : null });
         <Navigate to={'/cart'} />
     }
 
@@ -324,14 +103,15 @@ function Product({ product, addCartItem, cart }) {
                                     </Tab.List>
                                 </div>
 
-                                <Tab.Panels className="w-full aspect-w-1 aspect-h-1">
+                                <Tab.Panels className="w-full aspect-w-1 aspect-h-1 overflow-hidden ">
                                     {productImages.map((image) => (
                                         <Tab.Panel key={image.id}>
-                                            <img
+                                            {/* <img
                                                 src={image.src}
                                                 alt={image.alt}
-                                                className="w-full h-full object-center object-cover sm:rounded-lg"
-                                            />
+                                                className="w-full h-full object-center object-cover sm:rounded-lg hover:transition-transform hover:scale-150"
+                                            /> */}
+                                            <InnerImageZoom zoomType='hover' width={'100%'} height={'100%'} src={image.src} alt={image.alt} className='w-full h-full object-center object-cover sm:rounded-lg ' />
                                         </Tab.Panel>
                                     ))}
                                 </Tab.Panels>
@@ -539,8 +319,8 @@ function Product({ product, addCartItem, cart }) {
     )
 }
 
-const mapStateToProps = ({ cart }) => {
-    return cart
+const mapStateToProps = ({ user }) => {
+    return { cart: user.cart }
 }
 
 const mapDispatchToProps = {

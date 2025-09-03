@@ -8,25 +8,31 @@ export const sendRequest = async ({
   contentType = "application/json",
   isExternalAPI,
 }) => {
-  const csrfToken = localStorage.getItem("csrfToken");
   const token = localStorage.getItem("token");
+  const cartId = localStorage.getItem("cart_id"); // Retrieve cart_id from localStorage
   const isJSON = contentType === "application/json";
   const headers = isJSON
     ? {
         "Content-Type": contentType,
-        "XSRF-TOKEN": csrfToken,
         Authorization: `Bearer ${token}`,
+        ...(cartId && { "X-Cart-Id": cartId }), // Add cart_id as custom header if present
       }
-    : {};
+    : {
+        ...(cartId && { "X-Cart-Id": cartId }),
+      };
 
   try {
-    const response = await axios({
+    const axiosObject = {
       url: `${isExternalAPI ? "" : API_BASE_URL}${url}`,
       method,
       headers,
-      xsrfCookieNameCookie: `XSRF-TOKEN=${csrfToken}`,
       data: isJSON && body ? JSON.stringify(body) : body,
-    });
+    };
+
+    if (method === "DELETE" && body == null) {
+      delete axiosObject.data;
+    }
+    const response = await axios(axiosObject);
 
     const contentType = response.headers["content-type"];
     const isJSONResponse =

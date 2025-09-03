@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import Icon from '../../components/Icon';
 import Button from '../../components/Button';
 import { connect } from 'react-redux';
-import { addAddress } from '../../routines';
+import { addAddress, deleteAddress, updateAddress } from '../../routines';
 
-const AddressCard = ({ props, idx, setEditAddress, setEditAddressObject }) => {
+const AddressCard = ({ props, idx, setEditAddress, setEditAddressObject, addressId, deleteAddress }) => {
     const { id, first_name, address1, city, last_name } = props
     return (<div className='m-2 min-w-24 max-w-xs h-24 cursor-pointer'>
         <div className='flex justify-start items-start mb-3'>
@@ -24,25 +24,37 @@ const AddressCard = ({ props, idx, setEditAddress, setEditAddressObject }) => {
                 <Icon size={'w-5 mx-3'} iconName='pencilsquare' color={'white'} />
 
             </button>
-            <button className={' text-primaryNavy '}> <Icon iconName='trash' /></button>
+            <button className={' text-primaryNavy '} onClick={() => { deleteAddress(addressId) }}> <Icon iconName='trash' /></button>
         </div>
     </div>)
 };
 
-const EditAddress = ({ address, setEditAddress, setEditAddressObject, addAddress }) => {
+const EditAddress = ({ address, setEditAddress, setEditAddressObject, addAddress, updateAddress }) => {
 
     const [addressObj, setAddressObj] = useState({ ...address })
 
     const handleAddressChange = () => {
         if (addressObj.id != undefined) {
-            updateAddress()
+            updateAddress(addressObj)
+            setEditAddress(false)
         } else {
             addAddress(addressObj)
+            setEditAddress(false)
         }
     }
 
     const handleOnChange = ({ target: { name, value } }) => {
-        setAddressObj({ ...addressObj, [name]: value })
+        if ((name === 'first_name' || name === 'last_name')) {
+            setAddressObj({ ...addressObj, [name]: value.slice(0, 35) })
+        }
+        if ((name === 'address1' || name === 'address2')) {
+            setAddressObj({ ...addressObj, [name]: value.slice(0, 50) })
+        }
+        if (name === 'is_primary_address') {
+            setAddressObj({ ...addressObj, [name]: value === 'on' });
+        } else {
+            setAddressObj({ ...addressObj, [name]: value })
+        }
     }
     return (<div class="max-w-full mx-auto p-6 bg-white border border-gray-200 ">
         <div className='flex justify-between items-center gap-2'>
@@ -187,41 +199,20 @@ const EditAddress = ({ address, setEditAddress, setEditAddressObject, addAddress
     )
 }
 
-const AddressBook = ({ addAddress }) => {
+const AddressBook = ({ addAddress, updateAddress, address, deleteAddress }) => {
     const [editAddress, setEditAddress] = useState(false)
-    const [editAddressObject, setEditAddressObject] = useState(null)
-    const address = [
-        {
-            "id": 1,
-            "user_id": 1,
-            "address1": "123 Easy St",
-            "address2": "Apt 3",
-            "city": "San Francisco",
-            "state": "CA",
-            "zip": "12345",
-            "country": "United States",
-            "first_name": "John",
-            "last_name": "Doe",
-            "created": "2024-11-23T11:27:12.262Z",
-            "modified": "2024-11-23T11:27:12.262Z",
-            "is_primary_address": false
-        },
-        {
-            "id": 2,
-            "user_id": 1,
-            "address1": "gopinath",
-            "address2": "Apt 3",
-            "city": "Morena",
-            "state": "MP",
-            "zip": "476001",
-            "country": "United States",
-            "first_name": "Yashraj",
-            "last_name": "Verma",
-            "created": "2024-11-23T11:27:12.262Z",
-            "modified": "2024-11-23T11:27:12.262Z",
-            "is_primary_address": true
-        }
-    ]
+    const [editAddressObject, setEditAddressObject] = useState(address || {
+        "is_primary_address": false,
+        "address1": "",
+        "address2": "",
+        "city": "",
+        "state": "",
+        "zip": "",
+        "country": "",
+        "first_name": "",
+        "last_name": ""
+    })
+
     return (
         <div>
             <div className='flex justify-between items-center'>
@@ -239,6 +230,8 @@ const AddressBook = ({ addAddress }) => {
                             idx={idx + 1}
                             setEditAddress={setEditAddress}
                             setEditAddressObject={setEditAddressObject}
+                            deleteAddress={deleteAddress}
+                            addressId={address.id}
                         />
                     )
                 })}
@@ -248,11 +241,18 @@ const AddressBook = ({ addAddress }) => {
                 setEditAddress={setEditAddress}
                 setEditAddressObject={setEditAddressObject}
                 addAddress={addAddress}
+                updateAddress={updateAddress}
             />}
         </div>
     )
 }
+
+const mapStateToProps = (state) => ({
+    address: state.address,
+});
 const mapDispatchToProps = {
-    addAddress
+    addAddress,
+    updateAddress,
+    deleteAddress
 }
-export default connect(null, mapDispatchToProps)(AddressBook)
+export default connect(mapStateToProps, mapDispatchToProps)(AddressBook)

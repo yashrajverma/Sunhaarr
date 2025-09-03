@@ -42,8 +42,8 @@ const Home = () => {
     <div className=" w-[100%] text-center mb-12">
       <Text variant="3xl" className="text-center mb-5 font-bold" >Shop by Recipient</Text>
       <div className="flex justify-center gap-10 flex-wrap">
-        <ProductCard image={shopMen} text={"Him"} link={"/shop/men"} even={true} className={'w-[35%]'} />
-        <ProductCard image={shopWomen} text={"Her"} link={"/shop/women"} even={false} className={'w-[35%]'} />
+        <ProductCard image={shopMen} text={"Him"} link={"/products?category=men"} even={true} className={'w-[35%]'} />
+        <ProductCard image={shopWomen} text={"Her"} link={"/products?category=women"} even={false} className={'w-[35%]'} />
       </div>
     </div>
 

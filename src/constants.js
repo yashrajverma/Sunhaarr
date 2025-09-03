@@ -2,15 +2,21 @@ export const API_BASE_URL =
   process.env.NODE_ENV == "production"
     ? "https://sunhaarr-backend.vercel.app"
     : "http://localhost:5000";
-export const BrandName = "Sunhaarr";
+export const BrandName = "JewelMuse";
 export const API_URL = {
   user: "/register",
   login: "/login",
   products: "/products",
   cart: "/cart",
   cartItem: "/item",
+  account: "/account",
   address: "/address",
   logout: "/logout",
+  search: "/products/search",
+  // Admin endpoints
+  adminProduct: "/admin/products",
+  adminOrders: "/admin/orders",
+  adminDashboard: "/admin/dashboard",
 };
 
 export const HTTP_STATUS_CODES = {

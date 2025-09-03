@@ -1,11 +1,16 @@
 import { call, put, takeLatest } from "redux-saga/effects";
-import { addCartItem, deleteCartItem, getCartItem } from "../routines";
+import {
+  addCartItem,
+  deleteCartItem,
+  getCartItem,
+  updateCartItem,
+} from "../routines";
 import Api from "../api";
 export function* addCartItemSaga({ payload }) {
   try {
     yield put(addCartItem.request());
-    const { quantity, productId } = payload;
-    const cart = yield call(Api.addCartItem, { quantity, productId });
+    const { quantity, productId, cartId } = payload;
+    const cart = yield call(Api.addCartItem, { quantity, productId, cartId });
 
     yield put(addCartItem.success({ cart }));
   } catch (err) {
@@ -16,7 +21,7 @@ export function* addCartItemSaga({ payload }) {
   }
 }
 
-export function* getCartItemSaga({ payload }) {
+export function* getCartItemSaga() {
   try {
     yield put(getCartItem.request());
     const cartItem = yield call(Api.getCartItem);
@@ -30,10 +35,24 @@ export function* getCartItemSaga({ payload }) {
   }
 }
 
+export function* updateCartItemSaga({ payload }) {
+  try {
+    yield put(updateCartItem.request());
+    const { cartItem } = yield call(Api.updateCartItem, payload);
+
+    yield put(updateCartItem.success({ cartItem }));
+  } catch (err) {
+    console.log(err);
+    yield put(updateCartItem.failure(err));
+  } finally {
+    yield put(updateCartItem.fulfill());
+  }
+}
+
 export function* deleteCartItemSaga({ payload }) {
   try {
     yield put(deleteCartItem.request());
-    const cartItem = yield call(Api.deleteCartItem, { productId: payload });
+    const { cartItem } = yield call(Api.deleteCartItem, { productId: payload });
 
     yield put(deleteCartItem.success(cartItem));
   } catch (err) {
@@ -48,4 +67,5 @@ export function* watchCart() {
   yield takeLatest(addCartItem.TRIGGER, addCartItemSaga);
   yield takeLatest(getCartItem.TRIGGER, getCartItemSaga);
   yield takeLatest(deleteCartItem.TRIGGER, deleteCartItemSaga);
+  yield takeLatest(updateCartItem.TRIGGER, updateCartItemSaga);
 }
