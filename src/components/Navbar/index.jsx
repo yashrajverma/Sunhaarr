@@ -32,9 +32,9 @@ const Navbar = ({ cartItems, user, getSearch, search }) => {
       type: 'dropdown',
       label: 'Chains',
       items: [
-        { label: 'Men Chains', href: '/products?category=men_chains' },
-        { label: 'Women Chains', href: '/products?category=women_chains' },
-        { label: 'Child Chains', href: '/products?category=child_chains' },
+        { label: 'Men Chains', href: '/products?category=men_chain' },
+        { label: 'Women Chains', href: '/products?category=women_chain' },
+        { label: 'Child Chains', href: '/products?category=child_chain' },
       ]
     },
     {
