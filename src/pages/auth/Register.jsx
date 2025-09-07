@@ -4,6 +4,7 @@ import Button from '../../components/Button'
 import { Link, Navigate } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { register } from '../../routines'
+import Icon from '../../components/Icon'
 
 const Register = ({ registerUser, user }) => {
     const [registerData, setRegisterData] = useState({
@@ -24,6 +25,15 @@ const Register = ({ registerUser, user }) => {
     if (user && user.token) {
 
         return <Navigate to={'/'} />
+    }
+
+    const togglePasswordVisibility = () => {
+        const passwordInput = document.getElementById('input-password');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+        } else {
+            passwordInput.type = 'password';
+        }
     }
 
     return (
@@ -50,7 +60,10 @@ const Register = ({ registerUser, user }) => {
                         <div className="flex justify-between">
                             <label className="block text-gray-700 text-sm font-bold mb-2">Password</label>
                         </div>
-                        <input onChange={handleOnChange} name='password' placeholder='******' className="bg-white text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 py-2 px-4 block w-full appearance-none" type="password" />
+                        <div className='flex justify-between items-center bg-white text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 py-2 px-4 w-full appearance-none'>
+                            <input id="input-password" onChange={handleOnChange} name='password' placeholder='******' className="bg-white text-gray-700 focus:outline-none focus:ring-0 focus:shadow-outline border-none p-0 block w-[80%] appearance-none" type="password" />
+                            <Icon iconName="eye" color={'text-gray-700'} onClick={() => { togglePasswordVisibility() }} />
+                        </div>
                     </div>
                     <div className='mt-4'>
                         <div className="flex justify-end items-center">

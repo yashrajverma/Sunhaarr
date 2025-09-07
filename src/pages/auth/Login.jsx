@@ -5,6 +5,7 @@ import { Link, Navigate } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { login } from '../../routines'
 import getCSRFToken from '../../utils/getCSRFToken'
+import Icon from '../../components/Icon'
 
 const Login = ({ user, loginUser }) => {
     const [loginData, setLoginData] = useState({
@@ -28,6 +29,15 @@ const Login = ({ user, loginUser }) => {
         return <Navigate to={'/'} />
     }
 
+    const togglePasswordVisibility = () => {
+        const passwordInput = document.getElementById('input-password');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+        } else {
+            passwordInput.type = 'password';
+        }
+    }
+
     return (
         <div className="py-16">
             <div className="flex bg-softPeach shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
@@ -46,7 +56,11 @@ const Login = ({ user, loginUser }) => {
                             <label className="block text-gray-700 text-sm font-bold mb-2">Password</label>
                             <a href="#" className="text-xs text-gray-500">Forget Password?</a>
                         </div>
-                        <input onChange={handleOnChange} name='password' placeholder='******' className="bg-white text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 py-2 px-4 block w-full appearance-none" type="password" />
+                        <div className='flex justify-between items-center bg-white text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 py-2 px-4 w-full appearance-none'>
+                            <input id="input-password" onChange={handleOnChange} name='password' placeholder='******' className="focus:ring-0 bg-white text-gray-700 focus:outline-none focus:shadow-outline border-none p-0 block w-[80%] appearance-none" type="password" />
+                            <Icon iconName="eye" color='text-gray-700' onClick={() => { togglePasswordVisibility() }} />
+                        </div>
+
                     </div>
                     <div className='mt-4'>
                         <div className="flex justify-end items-center">

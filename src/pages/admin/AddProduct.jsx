@@ -19,6 +19,7 @@ const AddProduct = ({ addProduct }) => {
         images: [{ name: '', src: "", alt: "" }],
         metal: '',
         occasion: '',
+        weight: 0,
         details: [{ item: [], name: '' }]
     });
 
@@ -219,6 +220,20 @@ const AddProduct = ({ addProduct }) => {
                     </div>
 
                     <div className='grid grid-cols-2 gap-1'>
+                        <div>
+                            <label className="block text-gray-700 text-sm font-bold mb-2">
+                                Weight
+                            </label>
+                            <input
+                                type="number"
+                                name="weight"
+                                value={productData.weight}
+                                onChange={handleInputChange}
+                                className="w-full p-2 border rounded"
+                                required
+                            />
+                        </div>
+
                         <div>
                             <label className="block text-gray-700 text-sm font-bold mb-2">
                                 Metal
