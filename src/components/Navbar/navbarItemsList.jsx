@@ -11,13 +11,22 @@ const NavbarItemsList = ({ items }) => {
     };
 
     return (
-        <ul className="flex flex-col md:flex-row md:space-x-4 space-y-2 md:space-y-0 w-full md:w-auto">
+        <ul className="flex flex-col md:flex-row space-y-2 md:space-y-0 w-full md:w-auto">
             {items.map((item, index) => {
                 if (item.type === 'link') {
                     return (
-                        <li key={index} className="text-left md:text-left">
-                            <NavLink to={item.href} className="text-gray-800 hover:text-primaryNavy hover:font-bold block">
+                        <li
+                            key={index}
+                            className="text-left md:text-left group mx-2 hover:scale-105"
+                        >
+                            <NavLink
+                                to={item.href}
+                                className="relative text-gray-800 hover:text-primaryNavy block"
+                            >
                                 {item.label}
+                                <span
+                                    className="absolute left-0 bottom-0 w-full h-[2px] bg-primaryNavy scale-x-0 group-hover:scale-x-100 transition-transform duration-600 origin-left"
+                                />
                             </NavLink>
                         </li>
                     );
@@ -25,15 +34,15 @@ const NavbarItemsList = ({ items }) => {
                     return (
                         <li
                             key={index}
-                            className="relative focus-within:outline-none text-center md:text-left"
+                            className="relative focus-within:outline-none text-center md:text-left mx-2 hover:scale-105"
                         >
                             <button
                                 onClick={() => handleDropdownToggle(index)}
                                 aria-expanded={openDropdown === index}
                                 aria-haspopup="true"
-                                className={`text-gray-800 hover:text-primaryNavy hover:font-bold focus:outline-none flex items-center justify-center md:justify-start ${openDropdown === index ? 'hover:text-primaryNavy font-bold' : ''}`}
+                                className={`text-gray-800 hover:text-primaryNavy focus:outline-none flex items-center justify-center md:justify-start ${openDropdown === index ? 'hover:text-primaryNavy font-bold' : ''}`}
                             >
-                                <span className="flex items-center justify-center md:justify-start border-2 border-b-slate-300 border-t-0 border-l-0 border-r-0">
+                                <span className="flex items-center justify-center md:justify-start border-2 border-b-slate-300 hover:border-b-gray-800 border-t-0 border-l-0 border-r-0">
                                     {item.label}
                                 </span>
                             </button>

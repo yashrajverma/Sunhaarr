@@ -7,23 +7,29 @@ import image8 from '../../assets/images/image8.svg';
 import image9 from '../../assets/images/image9.svg';
 import image10 from '../../assets/images/image10.svg';
 import { Link } from 'react-router-dom';
+import Text from '../../components/Text';
 
 export default function PromoSection() {
     return (
         <div className="relative bg-white overflow-hidden">
-            <div className="pt-16 pb-80 sm:pt-24 sm:pb-40 lg:pt-40 lg:pb-48">
+            <div className="pt-16 pb-80 sm:pt-24 sm:pb-40 lg:pt-38 lg:pb-46">
                 <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 sm:static">
                     <div className="sm:max-w-lg">
                         <h1 className="text-4xl font font-extrabold tracking-tight text-gray-900 sm:text-6xl">
-                            Summer styles are finally here
+                            BOOK A COMPLIMENTARY Styling Appointment
                         </h1>
                         <p className="mt-4 text-xl text-gray-500">
-                            This year, our new summer collection will shelter you from the harsh elements of a world that doesn't care
-                            if you live or die.
+                            Whether you need some golden advice or a whole new look, our stylists are here to help you step up your stack
                         </p>
-                        <Link to='/products'>
+                        <Text variant="sm" className="text-gray-400 md:mt-12 mt-5">
+                            <ul>
+                                <li><Text> Approximately: 30 Minutes </Text></li>
+                                <li><Text>Complementary Styling Guides</Text></li>
+                            </ul>
+                        </Text>
+                        <Link to='tel:+918839080272'>
                             <Button className={'mt-5'}>
-                                Shop Collection
+                                CONNECT NOW
                             </Button>
                         </Link>
 

@@ -59,11 +59,11 @@ export const categories = [
   { type: "occasions", value: "party", label: "Party" },
 ];
 
-export const landingPageText = `Sunhaarr is your trusted family jeweller, where every piece of gold and silver jewellery is crafted with care and rooted in trust. For generations, families have relied on one jeweller who understood their values, traditions, and celebrations. At Sunhaarr, we carry forward that legacy by offering you the same reliability and warmth.
+export const landingPageText = `${BrandName} is your trusted family jeweller, where every piece of gold and silver jewellery is crafted with care and rooted in trust. For generations, families have relied on one jeweller who understood their values, traditions, and celebrations. At ${BrandName}, we carry forward that legacy by offering you the same reliability and warmth.
 
             We provide an exquisite collection of gold jewellery, silver jewellery, and timeless designs that celebrate both tradition and modern style. But for us, trading in precious metals is only part of the journey—our real priority is building lifelong relationships based on trust and customer satisfaction.
 
-            When you choose Sunhaarr, you are not just buying jewellery; you are becoming part of the Sunhaarr family. Explore our collection and experience the unmatched dedication, care, and authenticity that make us one of the most trusted jewellers in India.`;
+            When you choose ${BrandName}, you are not just buying jewellery; you are becoming part of the ${BrandName} family. Explore our collection and experience the unmatched dedication, care, and authenticity that make us one of the most trusted jewellers in India.`;
 
 export const cardItems = [
   {

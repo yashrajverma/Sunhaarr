@@ -11,7 +11,7 @@ const ProductCard2 = ({ id, image, text, link, category, price, description, in_
         }
     }, [])
     return (
-        <Link to={link} aria-disabled={!in_stock} className={`${!in_stock && 'flex flex-col justify-between items-start  cursor-not-allowed'} relative w-96 md:w-64 h-96 overflow-hidden cursor-pointer `}
+        <Link to={link} aria-disabled={!in_stock} className={`${!in_stock && 'flex flex-col justify-between items-start  cursor-not-allowed'} relative w-full md:w-64 h-96 overflow-hidden cursor-pointer `}
             onMouseEnter={() => { (Array.isArray(image) && image.length >= 2) ? setShowCarousel(true) : null }}
             onMouseLeave={() => { setShowCarousel(false) }}
         >

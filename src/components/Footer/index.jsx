@@ -16,7 +16,7 @@ const navigation = {
     legal: [
         { name: 'Claim', href: '#' },
         { name: 'Privacy', href: '/privacy-policy' },
-        { name: 'Terms', href: '#' },
+        { name: 'Refund', href: '/refund-policy' },
     ],
     social: [
         {
@@ -77,35 +77,33 @@ export default function Footer() {
                 Footer
             </h2>
             <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
-                <div className="pb-8 xl:grid xl:grid-cols-4 xl:gap-8">
-                    <div className="grid grid-cols-3 gap-8 xl:col-span-4">
-                        <div className="md:grid md:grid-cols-2 md:gap-8">
-                            <div>
-                                <h3 className="text-sm font-bold text-primaryNavy tracking-wider uppercase">Categories</h3>
-                                <ul role="list" className="mt-4 space-y-4">
-                                    {navigation.categories.map((item) => (
-                                        <li key={item.label}>
-                                            <Link to={`/products?category=${item.value}`} className="text-base text-primaryNavy hover:font-semibold">
-                                                {item.label}
-                                            </Link>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                            <div className="mt-12 md:mt-0">
-                                <h3 className="text-sm font-bold text-primaryNavy tracking-wider uppercase">Legal</h3>
-                                <ul role="list" className="mt-4 space-y-4">
-                                    {navigation.legal.map((item) => (
-                                        <li key={item.name}>
-                                            <Link to={item.href} className="text-base text-primaryNavy hover:font-semibold">
-                                                {item.name}
-                                            </Link>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
+                <div className="pb-8 w-full flex justify-around flex-wrap ">
+                    <div className="flex justify-start md:flex-nowrap flex-wrap gap-8">
+                        <div>
+                            <h3 className="text-sm font-bold text-primaryNavy tracking-wider uppercase">Categories</h3>
+                            <ul role="list" className="mt-4 space-y-4">
+                                {navigation.categories.map((item) => (
+                                    <li key={item.label}>
+                                        <Link to={`/products?category=${item.value}`} className="text-base text-primaryNavy hover:font-semibold">
+                                            {item.label}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
-                        <div className="mt-12 md:mt-0">
+                        <div className="px-4">
+                            <h3 className="text-sm font-bold text-primaryNavy tracking-wider uppercase">Legal</h3>
+                            <ul role="list" className="mt-4 space-y-4">
+                                {navigation.legal.map((item) => (
+                                    <li key={item.name}>
+                                        <Link to={item.href} className="text-base text-primaryNavy hover:font-semibold">
+                                            {item.name}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div className="px-4">
                             <h3 className="text-sm font-bold text-primaryNavy tracking-wider uppercase">Company</h3>
                             <ul role="list" className="mt-4 space-y-4">
                                 {navigation.company.map((item) => (
@@ -116,22 +114,22 @@ export default function Footer() {
                                     </li>
                                 ))}
                             </ul>
-                        </div>
-                        <div className="mt-12 xl:mt-0">
-                            <Text variant="3xl" className="text-left mb-5 font-bold text-primaryNavy">{BrandName} - Luxury Jewelry Store</Text>
-                            <Text variant="md" className="text-left mb-5 font-semibold text-gray-700">Munnalal Vishnu Kumar Saraf</Text>
-                            <Text variant="sm" className="text-left mb-5 font-normal text-gray-500">Kua Wali Market, Panchayati DharamShala, Dattapura Morena</Text>
-                            <Text variant="sm" className="text-left mb-5 font-normal text-gray-500">Contact:
-                                <ul >
-                                    <li>
-                                        <a href="tel:+917000042139" className="text-left font-normal text-gray-700">+91 7000042139</a>
-                                    </li>
-                                    <li>
-                                        <a href="tel:+918839080272" className="text-left font-normal text-gray-700">+91 8839080272</a>
-                                    </li>
-                                </ul>
-                            </Text>
-                        </div>
+                        </div></div>
+
+                    <div className="mt-12 xl:mt-0">
+                        <Text variant="3xl" className="text-left mb-5 font-bold text-primaryNavy">{BrandName} - Luxury Jewelry Store</Text>
+                        <Text variant="md" className="text-left mb-5 font-semibold text-gray-700">Munnalal Vishnu Kumar Saraf</Text>
+                        <Text variant="sm" className="text-left mb-5 font-normal text-gray-500">Kua Wali Market, Panchayati DharamShala, Dattapura Morena</Text>
+                        <Text variant="sm" className="text-left mb-5 font-normal text-gray-500">Contact:
+                            <ul >
+                                <li>
+                                    <a href="tel:+917000042139" className="text-left font-normal text-gray-700">+91 7000042139</a>
+                                </li>
+                                <li>
+                                    <a href="tel:+918839080272" className="text-left font-normal text-gray-700">+91 8839080272</a>
+                                </li>
+                            </ul>
+                        </Text>
                     </div>
                 </div>
                 <div className="border-t border-gray-700 pt-8 lg:flex lg:items-center lg:justify-between xl:mt-0">

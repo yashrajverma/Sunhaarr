@@ -158,7 +158,7 @@ function ProductCategories({ getProducts, products, pagination }) {
                         </Suspense>
 
                         <main className="max-w-2xl mx-auto py-4 px-4 sm:py-10 sm:px-6 lg:max-w-[100%] lg:px-10 relative">
-                            <div className="border-b border-gray-200 pb-10 flex justify-between items-center flex-wrap md:flex-nowrap sticky top-0 bg-white z-50">
+                            <div className="border-b border-gray-200 pb-10 flex justify-between items-center flex-wrap md:flex-nowrap bg-white">
                                 <div className=''>
 
                                     <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">{category ? formatSearchQuery(category) : 'Shop Trendy Jewels'}</h1>
@@ -167,10 +167,10 @@ function ProductCategories({ getProducts, products, pagination }) {
                                     </p>
                                 </div>
                                 <div>
-                                    <button className='bg-primaryNavy text-white p-3 my-3 md:my-0' onClick={handleResetFilter}>Remove Filters</button>
+                                    <button className='bg-primaryNavy text-white p-3 my-3 md:my-0 text-sm md:text-base' onClick={handleResetFilter}>Remove Filters</button>
                                     <select onChange={(e) => {
                                         setItemsPerPage(e.target.value)
-                                    }} className=' ml-2 py-3 bg-white border-2 border-primaryNavy focus-visible:border-softPeach'>
+                                    }} className=' ml-2 py-3 bg-white border-2 border-primaryNavy focus-visible:border-softPeach text-sm md:text-base'>
                                         <option value="10" selected className='bg-white border-2 border-primaryNavy focus-visible:border-softPeach'>Items Per Page</option>
                                         <option value="5" >10-50</option>
                                         <option value="70">50-70</option>
@@ -181,7 +181,7 @@ function ProductCategories({ getProducts, products, pagination }) {
 
                             </div>
 
-                            <div className="pt-12 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
+                            <div className="pt-6 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
                                 <aside>
                                     <h2 className="sr-only">Filters</h2>
 
@@ -194,12 +194,12 @@ function ProductCategories({ getProducts, products, pagination }) {
                                         <Icon iconName='plus' className="flex-shrink-0 ml-1 h-5 w-5 text-gray-400" aria-hidden="true" />
                                     </button>
 
-                                    <div className="hidden lg:block h-[100vh] overflow-y-scroll">
+                                    <div className="hidden lg:block h-[100vh] overflow-y-scroll sticky top-0">
                                         <form className="divide-y divide-gray-200 space-y-10 pl-4">
                                             {filters.map((section) => (
-                                                <div key={section.id} className="pt-10">
+                                                <div key={section.id} className="pt-6">
                                                     <fieldset>
-                                                        <legend className="block text-sm font-medium text-gray-900">{section.name}</legend>
+                                                        <legend className="block text-sm font-semibold text-gray-900">{section.name}</legend>
                                                         <div className="pt-6 space-y-3">
                                                             {section.options.map((option) => (
                                                                 <div key={option.value} className="flex items-center">

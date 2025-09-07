@@ -18,6 +18,7 @@ import { user } from "./routines"
 import Account from "./pages/Account"
 import Authenticated from "./layout/Authenticated"
 import AdminLayout from "./pages/admin"
+import RefundPolicy from "./pages/RefundPolicy"
 
 function App({ user, userData }) {
   const routesItems = [
@@ -46,6 +47,7 @@ function App({ user, userData }) {
         <Route path='/products/:category?' element={<ProductCategories />} />
         <Route path='/jewel-care' element={<JewelCare />} />
         <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+        <Route path='/refund-policy' element={<RefundPolicy />} />
         <Route path='/product/:id' element={<ProductPage />} />
 
       </Routes>
